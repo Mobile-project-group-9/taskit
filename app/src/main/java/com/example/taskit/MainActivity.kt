@@ -39,7 +39,7 @@ fun Taskit_Example() {
     Column(modifier = Modifier
         .padding(16.dp)
         .fillMaxWidth()) {
-        Text(text = "Taskit")
+        Text(text = "The app name is Taskit")
         
         
     }
