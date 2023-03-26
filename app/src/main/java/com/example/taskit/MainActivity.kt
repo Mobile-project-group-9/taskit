@@ -3,17 +3,13 @@ package com.example.taskit
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.taskit.home.HomeViewModel
+import com.example.taskit.login.LoginViewModel
 import com.example.taskit.ui.theme.TaskitTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,12 +17,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TaskitTheme {
+                val loginViewModel = viewModel(modelClass = LoginViewModel::class.java)
+                val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Taskit_Example()
+                    Navigation(
+                        loginViewModel = loginViewModel,
+                        homeViewModel = homeViewModel
+                    )
                     
                 }
             }
@@ -34,15 +35,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Taskit_Example() {
-    Column(modifier = Modifier
-        .padding(16.dp)
-        .fillMaxWidth()) {
-        Text(text = "Taskit")
-        
-        
-    }
-    
-    
-}
+
