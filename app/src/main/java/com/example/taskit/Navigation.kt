@@ -7,11 +7,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.taskit.home.Home
-import com.example.taskit.home.HomeViewModel
-import com.example.taskit.login.LoginScreen
-import com.example.taskit.login.LoginViewModel
-import com.example.taskit.login.SignUpScreen
+import com.example.taskit.ui.view.home.Home
+import com.example.taskit.ui.viewmodel.home.HomeViewModel
+import com.example.taskit.ui.view.login.LoginScreen
+import com.example.taskit.ui.view.login.LoginViewModel
+import com.example.taskit.ui.view.login.SignUpScreen
 
 enum class LoginRoutes {
     Signup,

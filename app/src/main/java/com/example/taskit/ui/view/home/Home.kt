@@ -1,4 +1,4 @@
-package com.example.taskit.home
+package com.example.taskit.ui.view.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskit.ui.theme.TaskitTheme
+import com.example.taskit.ui.viewmodel.home.HomeViewModel
 
 
 @Composable

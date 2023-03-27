@@ -1,9 +1,9 @@
-package com.example.taskit.home
+package com.example.taskit.ui.viewmodel.home
 
 
 
 import androidx.lifecycle.ViewModel
-import com.example.taskit.repository.StorageRepository
+import com.example.taskit.ui.model.repository.StorageRepository
 
 
 

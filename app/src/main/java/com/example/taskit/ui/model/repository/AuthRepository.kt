@@ -1,4 +1,4 @@
-package com.example.taskit.repository
+package com.example.taskit.ui.model.repository
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
