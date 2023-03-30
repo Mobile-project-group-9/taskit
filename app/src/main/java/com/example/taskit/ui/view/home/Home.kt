@@ -216,6 +216,8 @@ fun BottomNavigationBar() {
     }
 }
 
+// ------ ADD THE SIGN OUT FUNCTION IN THE PROFILE PAGE -------
+
 /*
 @Composable
 fun Home(
