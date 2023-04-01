@@ -15,51 +15,39 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun DropDownMenu(){
-    val items = listOf("Option 1", "Option 2", "Option 3")
-    val (expanded, setExpanded) = remember { mutableStateOf(false) }
-    val selectedIndex = remember { mutableStateOf(0) }
+    var firstDropdownSelection by remember { mutableStateOf(0) }
+    var secondDropdownSelection by remember { mutableStateOf(0) }
 
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(
-            text = "Select an option:",
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(4.dp))
-                .clickable(onClick = { setExpanded(!expanded) })
+    Column(modifier = Modifier.padding(16.dp)) {
+        // First Dropdown Menu
+        DropdownMenu(
+            expanded = false,
+            onDismissRequest = {},
+            modifier = Modifier.padding(16.dp)
         ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                Text(
-                    text = items[selectedIndex.value],
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.weight(1f)
-                )
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    contentDescription = "Dropdown Icon"
-                )
+            repeat(3) {
+                DropdownMenuItem(onClick = {
+                    firstDropdownSelection = it
+                    secondDropdownSelection = 0 // reset the selection in the second dropdown
+                }) {
+                    Text("Option $it")
+                }
             }
         }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { setExpanded(false) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items.forEachIndexed { index, text ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedIndex.value = index
-                        setExpanded(false)
+
+        // Second Dropdown Menu
+        if (firstDropdownSelection > 0) {
+            DropdownMenu(
+                expanded = false,
+                onDismissRequest = {},
+                modifier = Modifier.padding(16.dp)
+            ) {
+                repeat(3) {
+                    DropdownMenuItem(onClick = {
+                        secondDropdownSelection = it
+                    }) {
+                        Text("Option ${firstDropdownSelection}.${it}")
                     }
-                ) {
-                    Text(text = text)
                 }
             }
         }

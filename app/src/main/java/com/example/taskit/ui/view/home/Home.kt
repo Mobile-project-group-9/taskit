@@ -128,42 +128,6 @@ fun TwoButtonRow(){
     }
 }
 
-// ------ ADD THE SIGN OUT FUNCTION IN THE PROFILE PAGE -------
-
-/*
-@Composable
-fun Home(
-    homeViewModel: HomeViewModel?,
-    navToLoginPage: () -> Unit,
-) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {},
-                actions = {
-                    IconButton(onClick = {
-                        homeViewModel?.signOut()
-                        navToLoginPage.invoke()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.ExitToApp,
-                            contentDescription = null,
-                        )
-                    }
-                },
-                title = {
-                    Text(text = "Home")
-                }
-            )
-        }
-    ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-        }
-    }
-}
-
- */
-
 @Preview
 @Composable
 fun PrevHomeScreen() {

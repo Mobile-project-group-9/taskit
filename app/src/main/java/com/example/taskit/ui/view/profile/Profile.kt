@@ -24,6 +24,41 @@ import androidx.compose.ui.unit.sp
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.login.LoginScreen
 
+// ------ ADD THE SIGN OUT FUNCTION HERE -------
+
+/*
+@Composable
+fun Home(
+    homeViewModel: HomeViewModel?,
+    navToLoginPage: () -> Unit,
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                navigationIcon = {},
+                actions = {
+                    IconButton(onClick = {
+                        homeViewModel?.signOut()
+                        navToLoginPage.invoke()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.ExitToApp,
+                            contentDescription = null,
+                        )
+                    }
+                },
+                title = {
+                    Text(text = "Home")
+                }
+            )
+        }
+    ) { padding ->
+        Column(modifier = Modifier.padding(padding)) {
+        }
+    }
+}
+
+ */
 
 @Composable
 fun ProfileScreen() {
