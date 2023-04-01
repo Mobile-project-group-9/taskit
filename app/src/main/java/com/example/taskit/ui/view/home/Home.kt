@@ -97,7 +97,8 @@ fun MainScreen(navController: NavController){
         content = {
             Column {
                 TwoButtonRow();
-                DropDownMenu()
+                DropdownMenu()
+
             }
         },
         bottomBar = { BottomNavigationBar() }
