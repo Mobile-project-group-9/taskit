@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskit.ui.view.infos.InfoScreen
+import com.example.taskit.ui.view.navigation.BottomNavigationBar
 import com.example.taskit.ui.view.settings.SettingsScreen
 
 @Composable
@@ -96,7 +97,7 @@ fun MainScreen(navController: NavController){
         content = {
             Column {
                 TwoButtonRow();
-                DropdownList()
+                DropDownMenu()
             }
         },
         bottomBar = { BottomNavigationBar() }
@@ -122,59 +123,6 @@ fun TwoButtonRow(){
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFFA500)),
             ) {
                 Text("Create an offer")
-            }
-        }
-    }
-}
-
-@Composable
-fun DropdownList(){
-    val items = listOf("Option 1", "Option 2", "Option 3")
-    val (expanded, setExpanded) = remember { mutableStateOf(false) }
-    val selectedIndex = remember { mutableStateOf(0) }
-
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(
-            text = "Select an option:",
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(4.dp))
-                .clickable(onClick = { setExpanded(!expanded) })
-        ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                Text(
-                    text = items[selectedIndex.value],
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.weight(1f)
-                )
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    contentDescription = "Dropdown Icon"
-                )
-            }
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { setExpanded(false) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items.forEachIndexed { index, text ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedIndex.value = index
-                        setExpanded(false)
-                    }
-                ) {
-                    Text(text = text)
-                }
             }
         }
     }

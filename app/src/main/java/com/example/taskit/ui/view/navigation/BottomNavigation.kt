@@ -1,4 +1,4 @@
-package com.example.taskit.ui.view.home
+package com.example.taskit.ui.view.navigation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

@@ -114,7 +114,6 @@ fun NewOffer() {
     }
 }
 
-
 @Composable
 fun CategoryList(onClick:(String) -> Unit){
     var expanded by remember { mutableStateOf(false) }
@@ -173,7 +172,7 @@ fun CategoryList(onClick:(String) -> Unit){
 
 @Preview(showSystemUi = true)
 @Composable
-fun ProfiileScreen() {
+fun ProfileScreen() {
     TaskitTheme {
         NewOffer()
     }
