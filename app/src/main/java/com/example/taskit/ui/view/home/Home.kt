@@ -180,42 +180,6 @@ fun DropdownList(){
     }
 }
 
-@Composable
-fun BottomNavigationBar() {
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Button(
-            onClick = { /* ... */ },
-        ) {
-            Icon(
-                Icons.Filled.Send,
-                contentDescription = "Chat",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
-        }
-        Button(
-            onClick = { /* ... */ },
-        ) {
-            Icon(
-                Icons.Filled.AccountCircle,
-                contentDescription = "Account",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
-        }
-        Button(
-            onClick = { /* ... */ },
-        ) {
-            Icon(
-                Icons.Filled.Favorite,
-                contentDescription = "Favorite",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
-        }
-    }
-}
-
 // ------ ADD THE SIGN OUT FUNCTION IN THE PROFILE PAGE -------
 
 /*
@@ -262,5 +226,4 @@ fun PrevHomeScreen() {
         }
     }
 }
-
 
