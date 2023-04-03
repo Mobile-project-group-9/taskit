@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.login.LoginScreen
+import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 
 // ------ ADD THE SIGN OUT FUNCTION HERE -------
 
@@ -61,13 +62,14 @@ fun Home(
  */
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(profileViewModel: ProfileViewModel?,
+                  navToLoginPage: () -> Unit,) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ){
-        TopBox()
+        TopBox(profileViewModel,navToLoginPage)
         MiddleBox()
         Row(
             modifier= Modifier.padding(horizontal = 68.dp, vertical = 300.dp) ,
@@ -82,7 +84,8 @@ fun ProfileScreen() {
 }
 
 @Composable
-fun TopBox() {
+fun TopBox(profileViewModel: ProfileViewModel?,
+           navToLoginPage: () -> Unit,) {
     Box(
         modifier = Modifier
             .height(300.dp)
@@ -90,7 +93,8 @@ fun TopBox() {
             .clip(shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
             .background(Color.Blue)
     ){
-        TopBar()
+        TopBar(profileViewModel,
+        navToLoginPage)
     }
 }
 
@@ -207,7 +211,8 @@ fun HistoryButton(){
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(profileViewModel: ProfileViewModel?,
+           navToLoginPage: () -> Unit,) {
     var expanded by remember { mutableStateOf( false) }
     TopAppBar(
         modifier = Modifier.background(Color.Blue),
@@ -229,7 +234,8 @@ fun TopBar() {
             DropdownMenu(
                 expanded = expanded ,
                 onDismissRequest = { expanded = false }) {
-                DropdownMenuItem(onClick = {}) {
+                DropdownMenuItem(onClick = {profileViewModel?.signOut()
+                    navToLoginPage.invoke()}) {
                     Text("Log out")
                 }
 
@@ -238,10 +244,4 @@ fun TopBar() {
     )
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun ProfiileScreen() {
-    TaskitTheme {
-        ProfileScreen()
-    }
-}
+
