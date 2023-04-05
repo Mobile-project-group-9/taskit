@@ -16,8 +16,11 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.taskit.ui.theme.TaskitTheme
+import com.example.taskit.ui.view.home.Home
 
 @Composable
 fun OfferScreen(){
@@ -133,3 +136,13 @@ fun OfferCard(OfferName:String,Description:String,photoId:Int){
     }
 
 }
+
+
+@Preview
+@Composable
+fun PrevOffersScreen() {
+    TaskitTheme() {
+        OfferScreen()
+    }
+}
+

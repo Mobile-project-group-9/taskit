@@ -4,18 +4,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.viewmodel.home.HomeViewModel
 import android.annotation.SuppressLint
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
@@ -97,11 +92,10 @@ fun MainScreen(navController: NavController){
         content = {
             Column {
                 TwoButtonRow();
-                DropdownMenu()
-
+                DropdownMenu();
             }
         },
-        bottomBar = { BottomNavigationBar() }
+        bottomBar = { BottomNavigationBar(navController = navController) }
     )
 }
 
@@ -139,4 +133,3 @@ fun PrevHomeScreen() {
         }
     }
 }
-
