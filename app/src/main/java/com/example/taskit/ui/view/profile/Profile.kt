@@ -1,5 +1,6 @@
 package com.example.taskit.ui.view.profile
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,8 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.login.LoginScreen
+import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
+import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 
 // ------ ADD THE SIGN OUT FUNCTION HERE -------
@@ -62,30 +67,40 @@ fun Home(
  */
 
 @Composable
-fun ProfileScreen(profileViewModel: ProfileViewModel?,
-                  navToLoginPage: () -> Unit,) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ){
-        TopBox(profileViewModel,navToLoginPage)
-        MiddleBox()
-        Row(
-            modifier= Modifier.padding(horizontal = 68.dp, vertical = 300.dp) ,
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
-            EditButton()
-            HistoryButton()
-        }
-        ProfileImage()
-        InfoBox()
-    }
+fun ProfileScreen(navController: NavController, items: List<TabItem>) {
+
+    val profileViewmodel : ProfileViewModel = viewModel()
+    val scroll= rememberScrollState()
+
+    Scaffold(
+        topBar = { TopBar( ) },
+        content = { paddingValues ->
+            Log.d("Padding values", "$paddingValues")
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scroll)
+            ){
+                TopBox()
+                MiddleBox()
+                Row(
+                    modifier= Modifier.padding(horizontal = 68.dp, vertical = 300.dp) ,
+                    horizontalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
+                    EditButton()
+                    HistoryButton()
+                }
+                ProfileImage()
+                InfoBox()
+            }
+        },
+        bottomBar= { MyBottomNavigationBar(items,navController ) }
+    )
+
 }
 
 @Composable
-fun TopBox(profileViewModel: ProfileViewModel?,
-           navToLoginPage: () -> Unit,) {
+fun TopBox() {
     Box(
         modifier = Modifier
             .height(300.dp)
@@ -93,8 +108,13 @@ fun TopBox(profileViewModel: ProfileViewModel?,
             .clip(shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
             .background(Color.Blue)
     ){
-        TopBar(profileViewModel,
-        navToLoginPage)
+        Text(
+            modifier = Modifier.padding(top=10.dp, start = 20.dp),
+            text="Profile" ,
+            fontSize = 30.sp ,
+            fontWeight= FontWeight.Bold,
+            color= Color.White
+        )
     }
 }
 
@@ -211,14 +231,13 @@ fun HistoryButton(){
 }
 
 @Composable
-fun TopBar(profileViewModel: ProfileViewModel?,
-           navToLoginPage: () -> Unit,) {
+fun TopBar( ) {
     var expanded by remember { mutableStateOf( false) }
     TopAppBar(
         modifier = Modifier.background(Color.Blue),
         title = { Text(
             modifier = Modifier.padding(top=10.dp, start = 20.dp),
-            text="My Profile" ,
+            text="Taskit" ,
             fontSize = 30.sp ,
             fontWeight= FontWeight.Bold,
             color= Color.White)
@@ -234,8 +253,8 @@ fun TopBar(profileViewModel: ProfileViewModel?,
             DropdownMenu(
                 expanded = expanded ,
                 onDismissRequest = { expanded = false }) {
-                DropdownMenuItem(onClick = {profileViewModel?.signOut()
-                    navToLoginPage.invoke()}) {
+                DropdownMenuItem(onClick = {
+                }) {
                     Text("Log out")
                 }
 
@@ -243,5 +262,3 @@ fun TopBar(profileViewModel: ProfileViewModel?,
         }
     )
 }
-
-

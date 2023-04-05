@@ -12,7 +12,16 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.taskit.ui.view.home.MainScreen
+import com.example.taskit.ui.view.profile.ProfileScreen
+import com.example.taskit.ui.viewmodel.navigation.TabItem
+import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 
 /*
 @Composable
@@ -56,7 +65,7 @@ fun BottomNavigationBar() {
 
 =======
  */
-
+/*
 @Composable
 fun BottomNavigationBar(navController: NavController){
     BottomAppBar(){
@@ -91,6 +100,51 @@ fun BottomNavigationBar(navController: NavController){
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
             }
+        }
+    }
+}
+
+ */
+
+@Composable
+fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
+    var selectedItem by remember { mutableStateOf(0) }
+
+    BottomNavigation() {
+        items.forEachIndexed { index, item ->
+            BottomNavigationItem(
+                selected = selectedItem == index,
+                onClick = {
+                    selectedItem == index
+                    navController.navigate(item.route)
+                },
+                icon ={ Icon(item.icon, contentDescription = null)},
+                label = {Text(item.label)}
+            )
+
+        }
+    }
+}
+
+@Composable
+fun NavigationHost(tabItemViewModel: TabItemViewModel= viewModel()){
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "Home"
+    ){
+        composable(route ="Home"){
+            MainScreen(navController,tabItemViewModel.items)
+        }
+        composable(route="Chat"){
+
+        }
+        composable(route="Favourites"){
+
+        }
+        composable(route = "Profile"){
+            ProfileScreen(navController,tabItemViewModel.items)
         }
     }
 }

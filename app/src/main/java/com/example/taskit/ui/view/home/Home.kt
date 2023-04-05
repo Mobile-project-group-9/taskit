@@ -20,29 +20,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskit.ui.view.infos.InfoScreen
-import com.example.taskit.ui.view.navigation.BottomNavigationBar
+import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
+import com.example.taskit.ui.view.navigation.NavigationHost
 import com.example.taskit.ui.view.settings.SettingsScreen
+import com.example.taskit.ui.viewmodel.navigation.TabItem
 
 @Composable
 fun Home(
     homeViewModel: HomeViewModel?,
     navToLoginPage: () -> Unit,
 ){
-    val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = "Home"
-    ){
-        composable(route="Home"){
-            MainScreen(navController)
-        }
-        composable(route = "info"){
-            InfoScreen(navController = navController)
-        }
-        composable(route="Settings"){
-            SettingsScreen(navController)
-        }
-    }
+
+    NavigationHost()
 }
 
 @Composable
@@ -86,17 +75,16 @@ fun ScreenTopBar(title: String, navController: NavController){
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavController){
+fun MainScreen(navController: NavController,items: List<TabItem> ){
     Scaffold(
         topBar = { MainTopBar(title = "Taskit", navController = navController ) },
         content = {
             Column {
-                TwoButtonRow();
-                DropdownMenu();
+                TwoButtonRow()
+                DropdownMenu()
             }
         },
-        bottomBar = { BottomNavigationBar(navController = navController) }
-    )
+        bottomBar = { MyBottomNavigationBar(items,navController ) })
 }
 
 @Composable
