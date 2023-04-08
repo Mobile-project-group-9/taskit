@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.profile.ProfileScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
@@ -138,6 +139,7 @@ fun NavigationHost(tabItemViewModel: TabItemViewModel= viewModel()){
             MainScreen(navController,tabItemViewModel.items)
         }
         composable(route="Chat"){
+            ChatScreen(navController, tabItemViewModel.items )
 
         }
         composable(route="Favourites"){

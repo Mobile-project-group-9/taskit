@@ -1,14 +1,11 @@
 package com.example.taskit.ui.view.profile
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -24,15 +21,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.taskit.HomeRoutes
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.login.LoginScreen
 import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
+import com.example.taskit.ui.viewmodel.home.HomeViewModel
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 // ------ ADD THE SIGN OUT FUNCTION HERE -------
-
 /*
+
+@OptIn(ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
 @Composable
 fun Home(
     homeViewModel: HomeViewModel?,
@@ -63,8 +65,8 @@ fun Home(
         }
     }
 }
+*/
 
- */
 
 @Composable
 fun ProfileScreen(navController: NavController, items: List<TabItem>) {
@@ -232,6 +234,8 @@ fun HistoryButton(){
 
 @Composable
 fun TopBar( ) {
+    val vm : HomeViewModel = viewModel()
+    val vl: ProfileViewModel = viewModel()
     var expanded by remember { mutableStateOf( false) }
     TopAppBar(
         modifier = Modifier.background(Color.Blue),
@@ -253,11 +257,9 @@ fun TopBar( ) {
             DropdownMenu(
                 expanded = expanded ,
                 onDismissRequest = { expanded = false }) {
-                DropdownMenuItem(onClick = {
-                }) {
+                DropdownMenuItem(onClick = { vm.signOut()}) {
                     Text("Log out")
                 }
-
             }
         }
     )

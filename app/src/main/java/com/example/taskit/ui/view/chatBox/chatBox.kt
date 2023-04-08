@@ -14,11 +14,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.taskit.ui.theme.TaskitTheme
+import com.example.taskit.ui.view.newOffer.NewOffer
+import com.example.taskit.ui.viewmodel.navigation.TabItem
 
 @Composable
-fun ChatScreen(){
+fun ChatScreen(navController: NavController, items: List<TabItem>){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -112,3 +117,11 @@ fun ChatCard(user:String,photoId:Int){
     }
 
 }
+
+//@Preview(showSystemUi = true)
+//@Composable
+//fun chatScreen() {
+//    TaskitTheme {
+//        ChatScreen()
+//    }
+//}
