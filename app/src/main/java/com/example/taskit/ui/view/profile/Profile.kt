@@ -234,7 +234,8 @@ fun HistoryButton(){
 
 @Composable
 fun TopBar( ) {
-    val vm : HomeViewModel = viewModel()
+//    val vm : HomeViewModel = viewModel()
+//    val vm : FirebaseViewModel = viewModel()
     val vl: ProfileViewModel = viewModel()
     var expanded by remember { mutableStateOf( false) }
     TopAppBar(
@@ -254,13 +255,20 @@ fun TopBar( ) {
             ) {
                 Icon(Icons.Filled.MoreVert,contentDescription = null)
             }
-            DropdownMenu(
-                expanded = expanded ,
-                onDismissRequest = { expanded = false }) {
-                DropdownMenuItem(onClick = { vm.signOut()}) {
-                    Text("Log out")
-                }
+            Button(onClick = {  }) {
+                Text(text = "Log out")
             }
+
         }
     )
 }
+
+/**
+ * Logs out the user and resets the user
+ */
+//fun logout(){
+//    viewModelScope.launch {
+//        Firebase.auth.signOut()
+//        user.value = null;
+//    }
+//}

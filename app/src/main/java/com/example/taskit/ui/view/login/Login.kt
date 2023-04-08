@@ -148,7 +148,6 @@ fun SignUpScreen(
                 color = Color.Red,
             )
         }
-
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -218,26 +217,15 @@ fun SignUpScreen(
             }
 
         }
-
         if (loginUiState?.isLoading == true){
             CircularProgressIndicator()
         }
-
         LaunchedEffect(key1 = loginViewModel?.hasUser){
             if (loginViewModel?.hasUser == true){
                 onNavToHomePage.invoke()
             }
         }
-
-
-
-
-
-
-
     }
-
-
 }
 
 @Preview(showSystemUi = true)

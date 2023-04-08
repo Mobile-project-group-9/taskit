@@ -20,7 +20,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.MainScreen
+import com.example.taskit.ui.view.infos.InfoScreen
 import com.example.taskit.ui.view.profile.ProfileScreen
+import com.example.taskit.ui.view.settings.SettingsScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 
@@ -147,6 +149,12 @@ fun NavigationHost(tabItemViewModel: TabItemViewModel= viewModel()){
         }
         composable(route = "Profile"){
             ProfileScreen(navController,tabItemViewModel.items)
+        }
+        composable(route = "Info"){
+            InfoScreen(navController, tabItemViewModel.items)
+        }
+        composable(route = "Settings"){
+            SettingsScreen(navController)
         }
     }
 }

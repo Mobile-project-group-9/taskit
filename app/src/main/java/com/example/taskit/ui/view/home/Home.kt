@@ -30,7 +30,6 @@ fun Home(
     homeViewModel: HomeViewModel?,
     navToLoginPage: () -> Unit,
 ){
-
     NavigationHost()
 }
 
