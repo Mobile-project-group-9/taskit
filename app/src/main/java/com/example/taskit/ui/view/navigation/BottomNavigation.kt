@@ -21,6 +21,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.infos.InfoScreen
+import com.example.taskit.ui.view.newOffer.NewOffer
+import com.example.taskit.ui.view.profile.OfferScreen
 import com.example.taskit.ui.view.profile.ProfileScreen
 import com.example.taskit.ui.view.settings.SettingsScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
@@ -142,7 +144,6 @@ fun NavigationHost(tabItemViewModel: TabItemViewModel= viewModel()){
         }
         composable(route="Chat"){
             ChatScreen(navController, tabItemViewModel.items )
-
         }
         composable(route="Favourites"){
 
@@ -155,6 +156,12 @@ fun NavigationHost(tabItemViewModel: TabItemViewModel= viewModel()){
         }
         composable(route = "Settings"){
             SettingsScreen(navController)
+        }
+        composable(route = "NewOffer"){
+            NewOffer(navController)
+        }
+        composable(route = "Offers"){
+            OfferScreen(navController)
         }
     }
 }

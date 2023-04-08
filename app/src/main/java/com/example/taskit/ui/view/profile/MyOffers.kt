@@ -19,11 +19,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.home.Home
 
 @Composable
-fun OfferScreen(){
+fun OfferScreen(navController: NavController){
 
     Box(
         modifier = Modifier
@@ -136,13 +137,3 @@ fun OfferCard(OfferName:String,Description:String,photoId:Int){
     }
 
 }
-
-
-@Preview
-@Composable
-fun PrevOffersScreen() {
-    TaskitTheme() {
-        OfferScreen()
-    }
-}
-

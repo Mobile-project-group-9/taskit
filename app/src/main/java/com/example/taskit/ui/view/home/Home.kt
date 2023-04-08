@@ -79,7 +79,7 @@ fun MainScreen(navController: NavController,items: List<TabItem> ){
         topBar = { MainTopBar(title = "Taskit", navController = navController ) },
         content = {
             Column {
-                TwoButtonRow()
+                TwoButtonRow(navController)
                 DropdownMenu()
             }
         },
@@ -87,20 +87,20 @@ fun MainScreen(navController: NavController,items: List<TabItem> ){
 }
 
 @Composable
-fun TwoButtonRow(){
+fun TwoButtonRow(navController: NavController){
     MaterialTheme {
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { /* Do something */ },
+                onClick = { navController.navigate("Offers") },
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text("Offers")
             }
             Button(
-                onClick = { /* Do something */ },
+                onClick = { navController.navigate("NewOffer") },
                 modifier = Modifier.padding(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFFA500)),
             ) {
