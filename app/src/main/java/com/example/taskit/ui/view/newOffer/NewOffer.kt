@@ -27,6 +27,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -39,6 +40,7 @@ fun NewOffer(navController: NavController) {
     var location by remember { mutableStateOf("") }
     var price by remember { mutableStateOf(0) }
     var title by remember { mutableStateOf("") }
+    val currentuser = FirebaseAuth.getInstance().currentUser?.uid;
 
     Box(
         modifier = Modifier
@@ -122,7 +124,8 @@ fun NewOffer(navController: NavController) {
                         "description" to description,
                         "location" to location,
                         "Price" to price,
-                        "title" to title
+                        "title" to title,
+                        "currentuser" to currentuser.toString()
                     )
 
                     fireStore.collection("offers")
@@ -142,7 +145,7 @@ fun CategoryList(onClick:(String) -> Unit){
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("Choose a Category") }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
-    var items = listOf("Household","Babysitting","Gardening","Other category")
+    val items = listOf("Household","Babysitting","Gardening","Other category")
 
     val icon = if (expanded)
         Icons.Filled.KeyboardArrowUp
@@ -176,7 +179,7 @@ fun CategoryList(onClick:(String) -> Unit){
                 DropdownMenuItem(onClick = {
                     selectedText = label
 
-                    var category: String = when (label) {
+                    val category: String = when (label) {
                         "Household" -> "Household"
                         "Babysitting" -> "Babysitting"
                         "Gardening" -> "Gardening"
