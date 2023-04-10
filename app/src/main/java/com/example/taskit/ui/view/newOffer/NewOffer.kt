@@ -72,7 +72,7 @@ fun NewOffer(navController: NavController) {
             OutlinedTextField(value =title , onValueChange = {title = it},
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
-                    .height(40.dp)
+                    .height(50.dp)
                     .width(300.dp)
                     .background(Color.White),)
             CategoryList(onClick = {category = it})
@@ -87,7 +87,7 @@ fun NewOffer(navController: NavController) {
             OutlinedTextField(value =location , onValueChange = {location=it},
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
-                    .height(40.dp)
+                    .height(50.dp)
                     .width(300.dp)
                     .background(Color.White),)
             Text(text = "Description :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
@@ -103,7 +103,7 @@ fun NewOffer(navController: NavController) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
-                    .height(40.dp)
+                    .height(50.dp)
                     .width(300.dp)
                     .background(Color.White),)
             Row(
