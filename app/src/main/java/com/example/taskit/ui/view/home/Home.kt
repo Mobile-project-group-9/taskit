@@ -1,5 +1,6 @@
 package com.example.taskit.ui.view.home
 
+import OfferListScreen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -80,7 +81,8 @@ fun MainScreen(navController: NavController,items: List<TabItem> ){
         content = {
             Column {
                 TwoButtonRow(navController)
-                DropdownMenu()
+                //DropdownMenu()
+                OfferListScreen()
             }
         },
         bottomBar = { MyBottomNavigationBar(items,navController ) })

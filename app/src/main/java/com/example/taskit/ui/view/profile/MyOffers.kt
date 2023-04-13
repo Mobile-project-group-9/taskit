@@ -1,5 +1,7 @@
 package com.example.taskit.ui.view.profile
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.home.Home
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun OfferScreen(navController: NavController){
@@ -55,6 +58,9 @@ fun OfferScreen(navController: NavController){
 
 @Composable
 fun OfferBox() {
+
+
+    /*
     Box(
         modifier = Modifier
             .padding(vertical = 150.dp)
@@ -95,6 +101,8 @@ fun OfferBox() {
         }
 
     }
+
+     */
 }
 
 @Composable
