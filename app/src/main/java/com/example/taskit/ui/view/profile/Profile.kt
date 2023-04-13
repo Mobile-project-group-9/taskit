@@ -71,7 +71,7 @@ fun Home(
 @Composable
 fun ProfileScreen(navController: NavController, items: List<TabItem>) {
 
-    val profileViewmodel : ProfileViewModel = viewModel()
+    //val profileViewmodel : ProfileViewModel = viewModel()
     val scroll= rememberScrollState()
 
     Scaffold(

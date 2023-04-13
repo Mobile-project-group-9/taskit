@@ -24,9 +24,12 @@ import androidx.compose.ui.unit.toSize
 import com.example.taskit.ui.theme.TaskitTheme
 import android.util.Log
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.taskit.ui.view.home.DropdownMenu2
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,39 +37,40 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun NewOffer(navController: NavController) {
     val fireStore = Firebase.firestore
-
     var category by remember { mutableStateOf("Choose a Category") }
     var description by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
     var price by remember { mutableStateOf(0) }
     var title by remember { mutableStateOf("") }
-    val currentuser = FirebaseAuth.getInstance().currentUser?.uid;
+    val userID = FirebaseAuth.getInstance().currentUser?.uid;
+    var showOtherCat = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ){
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .background(Color(0xFF0077be)),
-            contentAlignment = Alignment.TopCenter
+        TopAppBar(
+            modifier = Modifier.background(Color.Blue),
+            title = { Text(
+                text="New Offer" ,
+                fontSize = 25.sp ,
+                fontWeight= FontWeight.Bold,
+                color= Color.White)
 
-
-        ){
-            Text(text = "New Offer", fontSize = 30.sp, color = Color.White, textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 20.dp))
-        }
+            },
+            navigationIcon = {
+                IconButton(onClick = { navController.navigateUp()}){
+                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                }
+            }
+        )
         Column(
             modifier = Modifier
                 .padding(horizontal = 30.dp, vertical = 90.dp)
                 .height(720.dp)
                 .width(350.dp)
                 .background(Color.LightGray),
-
-
             ){
             Text(text = "Title :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
             OutlinedTextField(value =title , onValueChange = {title = it},
@@ -76,6 +80,10 @@ fun NewOffer(navController: NavController) {
                     .width(300.dp)
                     .background(Color.White),)
             CategoryList(onClick = {category = it})
+            //showOtherCat.value = true
+
+
+            /*
             OutlinedTextField(value =category , onValueChange = {category=it},
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
@@ -83,6 +91,8 @@ fun NewOffer(navController: NavController) {
                     .background(Color.White),
                 label = {Text(text = "Other category")}
             )
+             */
+
             Text(text = "Location :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
             OutlinedTextField(value =location , onValueChange = {location=it},
                 modifier = Modifier
@@ -125,7 +135,7 @@ fun NewOffer(navController: NavController) {
                         "location" to location,
                         "Price" to price,
                         "title" to title,
-                        "currentuser" to currentuser.toString()
+                        "userID" to userID.toString()
                     )
 
                     fireStore.collection("offers")

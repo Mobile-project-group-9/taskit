@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,15 +44,13 @@ fun OfferScreen(navController: NavController){
 
             },
             navigationIcon = {
-                IconButton(onClick = {}
-                ) {
-                    Icon(painter = painterResource(id = com.example.taskit.R.drawable.baseline_arrow_back_24) , contentDescription = "Go back Icon")
+                IconButton(onClick = { navController.navigateUp()}){
+                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
                 }
             }
         )
         OfferBox()
     }
-
 }
 
 @Composable
@@ -96,7 +96,6 @@ fun OfferBox() {
 
     }
 }
-
 
 @Composable
 fun OfferCard(OfferName:String,Description:String,photoId:Int){
