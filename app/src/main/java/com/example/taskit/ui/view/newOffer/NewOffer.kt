@@ -133,7 +133,7 @@ fun NewOffer(navController: NavController) {
                         "category" to category,
                         "description" to description,
                         "location" to location,
-                        "Price" to price,
+                        "price" to price,
                         "title" to title,
                         "userID" to userID.toString()
                     )
