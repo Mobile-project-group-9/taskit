@@ -5,7 +5,6 @@ import com.example.taskit.ui.model.repository.StorageRepository
 
 class HomeViewModel(
     private val repository: StorageRepository = StorageRepository(),
-
 ) : ViewModel() {
     fun signOut() = repository.signOut()
 }

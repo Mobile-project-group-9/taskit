@@ -6,10 +6,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.taskit.ui.view.home.ScreenTopBar
+import com.example.taskit.ui.viewmodel.navigation.TabItem
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun InfoScreen(navController: NavController){
+fun InfoScreen(navController: NavController, items: List<TabItem>){
     Scaffold(
         topBar = { ScreenTopBar("Info", navController)},
         content = { Text(text="Content for Info Screen") },

@@ -226,7 +226,7 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
                 expanded = expanded ,
                 onDismissRequest = { expanded = false }) {
                 DropdownMenuItem(onClick = {
-                   profileViewModel.signOut()
+                    profileViewModel.signOut()
                     onSignOut()
                 }) {
                     Text("Log out")

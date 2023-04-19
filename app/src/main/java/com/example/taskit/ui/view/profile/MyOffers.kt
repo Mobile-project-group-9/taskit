@@ -1,10 +1,14 @@
 package com.example.taskit.ui.view.profile
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,11 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.home.Home
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun OfferScreen(){
+fun OfferScreen(navController: NavController){
 
     Box(
         modifier = Modifier
@@ -41,19 +47,20 @@ fun OfferScreen(){
 
             },
             navigationIcon = {
-                IconButton(onClick = {}
-                ) {
-                    Icon(painter = painterResource(id = com.example.taskit.R.drawable.baseline_arrow_back_24) , contentDescription = "Go back Icon")
+                IconButton(onClick = { navController.navigateUp()}){
+                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
                 }
             }
         )
         OfferBox()
     }
-
 }
 
 @Composable
 fun OfferBox() {
+
+
+    /*
     Box(
         modifier = Modifier
             .padding(vertical = 150.dp)
@@ -94,8 +101,9 @@ fun OfferBox() {
         }
 
     }
-}
 
+     */
+}
 
 @Composable
 fun OfferCard(OfferName:String,Description:String,photoId:Int){
@@ -136,13 +144,3 @@ fun OfferCard(OfferName:String,Description:String,photoId:Int){
     }
 
 }
-
-
-@Preview
-@Composable
-fun PrevOffersScreen() {
-    TaskitTheme() {
-        OfferScreen()
-    }
-}
-

@@ -10,7 +10,8 @@ class ProfileViewModel(
 
     val user = repository.user()
     val hasUser:Boolean
-    get() = repository.hasUser()
+        get() = repository.hasUser()
 
     fun signOut() = repository.signOut()
+
 }

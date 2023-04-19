@@ -22,63 +22,86 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.example.taskit.ui.theme.TaskitTheme
+import android.util.Log
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.taskit.ui.view.home.DropdownMenu2
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 @Composable
-fun NewOffer() {
+fun NewOffer(navController: NavController) {
+    val fireStore = Firebase.firestore
     var category by remember { mutableStateOf("Choose a Category") }
+    var description by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("") }
+    var price by remember { mutableStateOf(0) }
+    var title by remember { mutableStateOf("") }
+    val userID = FirebaseAuth.getInstance().currentUser?.uid;
+    var showOtherCat = remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
+    ){
+        TopAppBar(
+            modifier = Modifier.background(Color.Blue),
+            title = { Text(
+                text="New Offer" ,
+                fontSize = 25.sp ,
+                fontWeight= FontWeight.Bold,
+                color= Color.White)
 
-
-
-        ){
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .background(Color(0xFF0077be)),
-            contentAlignment = Alignment.TopCenter
-
-
-        ){
-            Text(text = "New Offer", fontSize = 30.sp, color = Color.White, textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 20.dp))
-        }
+            },
+            navigationIcon = {
+                IconButton(onClick = { navController.navigateUp()}){
+                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                }
+            }
+        )
         Column(
             modifier = Modifier
                 .padding(horizontal = 30.dp, vertical = 90.dp)
                 .height(720.dp)
                 .width(350.dp)
                 .background(Color.LightGray),
-
-
             ){
-            Text(text = "Tilte :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
-            OutlinedTextField(value ="" , onValueChange = {/*TODO*/},
+            Text(text = "Title :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
+            OutlinedTextField(value =title , onValueChange = {title = it},
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
-                    .height(40.dp)
+                    .height(50.dp)
                     .width(300.dp)
                     .background(Color.White),)
             CategoryList(onClick = {category = it})
-            OutlinedTextField(value ="" , onValueChange = {/*TODO*/},
+            //showOtherCat.value = true
+
+
+            /*
+            OutlinedTextField(value =category , onValueChange = {category=it},
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
                     .width(300.dp)
                     .background(Color.White),
                 label = {Text(text = "Other category")}
             )
+             */
+
             Text(text = "Location :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
-            OutlinedTextField(value ="" , onValueChange = {/*TODO*/},
+            OutlinedTextField(value =location , onValueChange = {location=it},
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
-                    .height(40.dp)
+                    .height(50.dp)
                     .width(300.dp)
                     .background(Color.White),)
             Text(text = "Description :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
-            OutlinedTextField(value ="" , onValueChange = {/*TODO*/},
+            OutlinedTextField(value =description , onValueChange = {description=it},
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
                     .height(200.dp)
@@ -86,10 +109,11 @@ fun NewOffer() {
                     .background(Color.White),)
 
             Text(text = "Price :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
-            OutlinedTextField(value ="" , onValueChange = {/*TODO*/},
+            OutlinedTextField(value =price.toString() , onValueChange = {price = it.toIntOrNull() ?: 0},
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 5.dp)
-                    .height(40.dp)
+                    .height(50.dp)
                     .width(300.dp)
                     .background(Color.White),)
             Row(
@@ -97,17 +121,29 @@ fun NewOffer() {
                     .padding(horizontal = 80.dp, vertical = 10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(
+                /*Button(
                     onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
                 ) {
                     Text(text = "Cancel", color = Color(0xFF0077be))
                 }
-                Button(
-                    onClick = { /*TODO*/ }, modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                ) {
-                    Text(text = "Add")
+                 */
+                Button(onClick = {
+                    val job = hashMapOf<String, Any>(
+                        "category" to category,
+                        "description" to description,
+                        "location" to location,
+                        "price" to price,
+                        "title" to title,
+                        "userID" to userID.toString()
+                    )
+
+                    fireStore.collection("offers")
+                        .add(job)
+                        .addOnSuccessListener { d -> Log.i("***", "job added") }
+                        .addOnFailureListener { e -> Log.i("***", e.toString())}
+                }) {
+                    Text("Submit")
                 }
             }
         }
@@ -119,7 +155,7 @@ fun CategoryList(onClick:(String) -> Unit){
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("Choose a Category") }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
-    var items = listOf("Household","Babysitting","Gardening","Other category")
+    val items = listOf("Household","Babysitting","Gardening","Other category")
 
     val icon = if (expanded)
         Icons.Filled.KeyboardArrowUp
@@ -153,7 +189,7 @@ fun CategoryList(onClick:(String) -> Unit){
                 DropdownMenuItem(onClick = {
                     selectedText = label
 
-                    var category: String = when (label) {
+                    val category: String = when (label) {
                         "Household" -> "Household"
                         "Babysitting" -> "Babysitting"
                         "Gardening" -> "Gardening"
@@ -167,14 +203,6 @@ fun CategoryList(onClick:(String) -> Unit){
                 }
             }
         }
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun ProfileScreen() {
-    TaskitTheme {
-        NewOffer()
     }
 }
 

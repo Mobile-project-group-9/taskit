@@ -1,5 +1,6 @@
 package com.example.taskit.ui.view.home
 
+import OfferListScreen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -36,7 +37,6 @@ fun Home(
     ) {
         HomeNavGraph(navController,profileViewModel)
     }
-
 }
 
 @Composable
@@ -86,28 +86,29 @@ fun MainScreen(){
         topBar = { MainTopBar(title = "Taskit", navController = navController ) },
         content = {
             Column {
-                TwoButtonRow()
-                DropdownMenu()
+                TwoButtonRow(navController)
+                //DropdownMenu()
+                OfferListScreen()
             }
         },
     )
 }
 
 @Composable
-fun TwoButtonRow(){
+fun TwoButtonRow(navController: NavController){
     MaterialTheme {
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { /* Do something */ },
+                onClick = { navController.navigate("Offers") },
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text("Offers")
             }
             Button(
-                onClick = { /* Do something */ },
+                onClick = { navController.navigate("NewOffer") },
                 modifier = Modifier.padding(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFFA500)),
             ) {
