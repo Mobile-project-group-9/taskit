@@ -24,56 +24,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.taskit.LoginRoutes
 import com.example.taskit.ui.theme.TaskitTheme
+import com.example.taskit.ui.view.chatBox.ChatScreen
+import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.login.LoginScreen
 import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 
-// ------ ADD THE SIGN OUT FUNCTION HERE -------
 
-/*
-@Composable
-fun Home(
-    homeViewModel: HomeViewModel?,
-    navToLoginPage: () -> Unit,
-) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {},
-                actions = {
-                    IconButton(onClick = {
-                        homeViewModel?.signOut()
-                        navToLoginPage.invoke()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.ExitToApp,
-                            contentDescription = null,
-                        )
-                    }
-                },
-                title = {
-                    Text(text = "Home")
-                }
-            )
-        }
-    ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-        }
-    }
-}
 
- */
 
 @Composable
-fun ProfileScreen(navController: NavController, items: List<TabItem>) {
+fun ProfileScreen(profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
 
-    val profileViewmodel : ProfileViewModel = viewModel()
     val scroll= rememberScrollState()
 
     Scaffold(
-        topBar = { TopBar( ) },
+        topBar = { TopBar(profileViewModel,onSignOut) },
         content = { paddingValues ->
             Log.d("Padding values", "$paddingValues")
             Box(
@@ -94,7 +66,6 @@ fun ProfileScreen(navController: NavController, items: List<TabItem>) {
                 InfoBox()
             }
         },
-        bottomBar= { MyBottomNavigationBar(items,navController ) }
     )
 
 }
@@ -231,7 +202,7 @@ fun HistoryButton(){
 }
 
 @Composable
-fun TopBar( ) {
+fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
     var expanded by remember { mutableStateOf( false) }
     TopAppBar(
         modifier = Modifier.background(Color.Blue),
@@ -246,6 +217,7 @@ fun TopBar( ) {
         actions = {
             IconButton(onClick = {
                 expanded = !expanded
+
             }
             ) {
                 Icon(Icons.Filled.MoreVert,contentDescription = null)
@@ -254,11 +226,20 @@ fun TopBar( ) {
                 expanded = expanded ,
                 onDismissRequest = { expanded = false }) {
                 DropdownMenuItem(onClick = {
+                   profileViewModel.signOut()
+                    onSignOut()
                 }) {
                     Text("Log out")
                 }
 
             }
         }
+
     )
+
+    LaunchedEffect(key1 = profileViewModel?.hasUser){
+        if (profileViewModel?.hasUser == false){
+            onSignOut()
+        }
+    }
 }
