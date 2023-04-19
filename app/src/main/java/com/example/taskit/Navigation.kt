@@ -57,7 +57,7 @@ fun Navigation(
     NavHost(
         navController=navController,
         route="root_graph",
-        startDestination = NestedRoutes.Login.name
+        startDestination = "splash_screen"
     ){
         composable("splash_screen") {
             SplashScreen(navController = navController)
