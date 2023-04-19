@@ -12,6 +12,8 @@ import com.example.taskit.ui.viewmodel.home.HomeViewModel
 import com.example.taskit.ui.view.login.LoginScreen
 import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.login.SignUpScreen
+import com.example.taskit.ui.view.login.SplashScreen
+
 //import com.example.taskit.ui.view.profile.Home_2
 
 enum class LoginRoutes {
@@ -25,8 +27,10 @@ enum class HomeRoutes {
 
 enum class NestedRoutes {
     Main,
-    Login
+    Login,
+    Splash
 }
+
 
 
 @Composable
@@ -37,14 +41,18 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NestedRoutes.Login.name
+        startDestination = "splash_screen"
     ) {
+        composable("splash_screen") {
+            SplashScreen(navController = navController)
+        }
         authGraph(navController, loginViewModel)
         homeGraph(
             navController = navController,
             homeViewModel
         )
     }
+
 
 
 }
