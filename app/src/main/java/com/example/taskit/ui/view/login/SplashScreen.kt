@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.taskit.LoginRoutes
 import com.example.taskit.NestedRoutes
 import com.example.taskit.R
 import kotlinx.coroutines.delay
@@ -19,7 +20,7 @@ fun SplashScreen(navController: NavController) {
 
     LaunchedEffect(key1 = true) {
         delay(4000L)
-        navController.navigate(NestedRoutes.Login.name)
+        navController.navigate(LoginRoutes.SignIn.name)
     }
 
     Column(

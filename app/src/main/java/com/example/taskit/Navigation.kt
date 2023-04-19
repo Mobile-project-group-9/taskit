@@ -55,31 +55,51 @@ fun Navigation(
     tabItemViewmodel : TabItemViewModel = viewModel()
 ){
     NavHost(
-        navController = navController,
-        startDestination = "splash_screen"
-    ) {
-        composable("splash_screen") {
-            SplashScreen(navController = navController)
-        }
-        authGraph(navController, loginViewModel)
-        homeGraph(
-            navController = navController,
-            homeViewModel
-        )
-    }
-
-
-
         navController=navController,
         route="root_graph",
         startDestination = NestedRoutes.Login.name
     ){
+        composable("splash_screen") {
+            SplashScreen(navController = navController)
+        }
         authNavGraph(navController = navController, loginViewModel = loginViewModel, profileViewModel = profileViewModel )
         composable(route=NestedRoutes.Main.name){
             Home(tabItemViewmodel,profileViewModel)
         }
     }
 }
+//fun Navigation(
+//    navController: NavHostController= rememberNavController(),
+//    loginViewModel: LoginViewModel,
+//    profileViewModel: ProfileViewModel,
+//    tabItemViewmodel : TabItemViewModel = viewModel()
+//){
+//    NavHost(
+//        navController = navController,
+//        startDestination = "splash_screen"
+//    ) {
+//        composable("splash_screen") {
+//            SplashScreen(navController = navController)
+//        }
+//        authGraph(navController, loginViewModel)
+//        homeGraph(
+//            navController = navController,
+//            homeViewModel
+//        )
+//    }
+//
+//
+//
+//        navController=navController,
+//        route="root_graph",
+//        startDestination = NestedRoutes.Login.name
+//    ){
+//        authNavGraph(navController = navController, loginViewModel = loginViewModel, profileViewModel = profileViewModel )
+//        composable(route=NestedRoutes.Main.name){
+//            Home(tabItemViewmodel,profileViewModel)
+//        }
+//    }
+//}
 
 
 
