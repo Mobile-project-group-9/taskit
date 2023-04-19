@@ -10,10 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskit.ui.theme.TaskitTheme
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -21,18 +23,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.taskit.ui.view.navigation.HomeNavGraph
 import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
-import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
-import com.example.taskit.ui.view.newOffer.NewOffer
-import com.example.taskit.ui.view.profile.OfferScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Home(
-     tabItemViewmodel : TabItemViewModel = viewModel(),
-     profileViewModel: ProfileViewModel,
-     navController: NavHostController = rememberNavController()
+    tabItemViewmodel : TabItemViewModel = viewModel(),
+    profileViewModel: ProfileViewModel,
+    navController: NavHostController = rememberNavController()
 ){
     Scaffold(
         bottomBar = { MyBottomNavigationBar(tabItemViewmodel.items,navController ) }
@@ -80,21 +79,6 @@ fun ScreenTopBar(title: String, navController: NavController){
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun MainScreen(navController: NavHostController){
-    Scaffold(
-        topBar = { MainTopBar(title = "Taskit", navController = navController ) },
-        content = {
-            Column {
-                TwoButtonRow(navController)
-                //DropdownMenu()
-                OfferListScreen()
-            }
-        },
-    )
-}
-
 @Composable
 fun TwoButtonRow(navController: NavController){
     MaterialTheme {
@@ -114,6 +98,92 @@ fun TwoButtonRow(navController: NavController){
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFFA500)),
             ) {
                 Text("Create an offer")
+            }
+        }
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun MainScreen(navController: NavHostController) {
+    val navController = rememberNavController()
+    Scaffold(
+        topBar = { MainTopBar(title = "Taskit", navController = navController ) },
+        content = {
+            Column {
+                TwoButtonRow(navController)
+                Text(
+                    text = "Offers",
+                    style = MaterialTheme.typography.h4,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                DropdownMenu()
+                Spacer(modifier = Modifier.height(30.dp))
+                OfferListScreen()
+            }
+        },
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun DropdownMenu() {
+    val listItems = arrayOf("Household", "Babysitting", "Gardening", "Other")
+    val contextForToast = LocalContext.current.applicationContext
+
+    // state of the menu
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
+    // remember the selected item
+    var selectedItem by remember {
+        mutableStateOf(listItems[0])
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        // box
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            }
+        ) {
+            // text field
+            TextField(
+                value = selectedItem,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(text = "Label") },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = expanded
+                    )
+                },
+                colors = ExposedDropdownMenuDefaults.textFieldColors()
+            )
+
+            // menu
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                // this is a column scope
+                // all the items are added vertically
+                listItems.forEach { selectedOption ->
+                    // menu item
+                    DropdownMenuItem(onClick = {
+                        selectedItem = selectedOption
+                        Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
+                        expanded = false
+                    }) {
+                        Text(text = selectedOption)
+                    }
+                }
+
             }
         }
     }
