@@ -9,29 +9,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskit.ui.theme.TaskitTheme
-import com.example.taskit.ui.viewmodel.home.HomeViewModel
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.taskit.ui.view.infos.InfoScreen
+import com.example.taskit.ui.view.navigation.HomeNavGraph
 import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
-import com.example.taskit.ui.view.navigation.NavigationHost
-import com.example.taskit.ui.view.settings.SettingsScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
+import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
+import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
+import com.example.taskit.ui.view.newOffer.NewOffer
+import com.example.taskit.ui.view.profile.OfferScreen
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Home(
-    homeViewModel: HomeViewModel?,
-    navToLoginPage: () -> Unit,
+     tabItemViewmodel : TabItemViewModel = viewModel(),
+     profileViewModel: ProfileViewModel,
+     navController: NavHostController = rememberNavController()
 ){
-    NavigationHost()
+    Scaffold(
+        bottomBar = { MyBottomNavigationBar(tabItemViewmodel.items,navController ) }
+    ) {
+        HomeNavGraph(navController,profileViewModel)
+    }
 }
 
 @Composable
@@ -75,7 +82,7 @@ fun ScreenTopBar(title: String, navController: NavController){
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavController,items: List<TabItem> ){
+fun MainScreen(navController: NavHostController){
     Scaffold(
         topBar = { MainTopBar(title = "Taskit", navController = navController ) },
         content = {
@@ -85,7 +92,7 @@ fun MainScreen(navController: NavController,items: List<TabItem> ){
                 OfferListScreen()
             }
         },
-        bottomBar = { MyBottomNavigationBar(items,navController ) })
+    )
 }
 
 @Composable
@@ -116,9 +123,5 @@ fun TwoButtonRow(navController: NavController){
 @Composable
 fun PrevHomeScreen() {
     TaskitTheme() {
-        Home(
-            homeViewModel = null,
-        ) {
-        }
     }
 }

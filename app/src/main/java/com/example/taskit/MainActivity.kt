@@ -11,6 +11,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.taskit.ui.viewmodel.home.HomeViewModel
 import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.theme.TaskitTheme
+import com.example.taskit.ui.view.login.LoginScreen
+import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,18 +20,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             TaskitTheme {
                 val loginViewModel = viewModel(modelClass = LoginViewModel::class.java)
-                val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+                val profileViewModel = viewModel(modelClass = ProfileViewModel::class.java)
                 // A surface container using the 'background' color from the theme
                 //test
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Navigation(
-                        loginViewModel = loginViewModel,
-                        homeViewModel = homeViewModel
-                    )
-                    
+                    Navigation(loginViewModel = loginViewModel,profileViewModel=profileViewModel)
                 }
             }
         }

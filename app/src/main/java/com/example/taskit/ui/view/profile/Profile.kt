@@ -1,11 +1,14 @@
 package com.example.taskit.ui.view.profile
 
 import android.util.Log
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -21,61 +24,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.taskit.HomeRoutes
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.taskit.LoginRoutes
 import com.example.taskit.ui.theme.TaskitTheme
+import com.example.taskit.ui.view.chatBox.ChatScreen
+import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.login.LoginScreen
 import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
-import com.example.taskit.ui.viewmodel.home.HomeViewModel
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
-// ------ ADD THE SIGN OUT FUNCTION HERE -------
-/*
 
-@OptIn(ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
-@Composable
-fun Home(
-    homeViewModel: HomeViewModel?,
-    navToLoginPage: () -> Unit,
-) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {},
-                actions = {
-                    IconButton(onClick = {
-                        homeViewModel?.signOut()
-                        navToLoginPage.invoke()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.ExitToApp,
-                            contentDescription = null,
-                        )
-                    }
-                },
-                title = {
-                    Text(text = "Home")
-                }
-            )
-        }
-    ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-        }
-    }
-}
-*/
 
 
 @Composable
-fun ProfileScreen(navController: NavController, items: List<TabItem>) {
+fun ProfileScreen(profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
 
-    //val profileViewmodel : ProfileViewModel = viewModel()
     val scroll= rememberScrollState()
 
     Scaffold(
-        topBar = { TopBar( ) },
+        topBar = { TopBar(profileViewModel,onSignOut) },
         content = { paddingValues ->
             Log.d("Padding values", "$paddingValues")
             Box(
@@ -96,7 +66,6 @@ fun ProfileScreen(navController: NavController, items: List<TabItem>) {
                 InfoBox()
             }
         },
-        bottomBar= { MyBottomNavigationBar(items,navController ) }
     )
 
 }
@@ -233,10 +202,7 @@ fun HistoryButton(){
 }
 
 @Composable
-fun TopBar( ) {
-//    val vm : HomeViewModel = viewModel()
-//    val vm : FirebaseViewModel = viewModel()
-    val vl: ProfileViewModel = viewModel()
+fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
     var expanded by remember { mutableStateOf( false) }
     TopAppBar(
         modifier = Modifier.background(Color.Blue),
@@ -251,24 +217,29 @@ fun TopBar( ) {
         actions = {
             IconButton(onClick = {
                 expanded = !expanded
+
             }
             ) {
                 Icon(Icons.Filled.MoreVert,contentDescription = null)
             }
-            Button(onClick = {  }) {
-                Text(text = "Log out")
+            DropdownMenu(
+                expanded = expanded ,
+                onDismissRequest = { expanded = false }) {
+                DropdownMenuItem(onClick = {
+                    profileViewModel.signOut()
+                    onSignOut()
+                }) {
+                    Text("Log out")
+                }
+
             }
-
         }
-    )
-}
 
-/**
- * Logs out the user and resets the user
- */
-//fun logout(){
-//    viewModelScope.launch {
-//        Firebase.auth.signOut()
-//        user.value = null;
-//    }
-//}
+    )
+
+    LaunchedEffect(key1 = profileViewModel?.hasUser){
+        if (profileViewModel?.hasUser == false){
+            onSignOut()
+        }
+    }
+}

@@ -23,7 +23,7 @@ import com.example.taskit.ui.view.newOffer.NewOffer
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 
 @Composable
-fun ChatScreen(navController: NavController, items: List<TabItem>){
+fun ChatScreen(){
     Box(
         modifier = Modifier
             .fillMaxSize()

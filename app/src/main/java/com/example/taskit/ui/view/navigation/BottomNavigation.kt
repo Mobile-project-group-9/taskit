@@ -1,23 +1,21 @@
 package com.example.taskit.ui.view.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import com.example.taskit.HomeRoutes
+import com.example.taskit.LoginRoutes
+import com.example.taskit.NestedRoutes
+import com.example.taskit.ui.view.chatBox.ChatScreen
+import com.example.taskit.ui.view.home.Home
 import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.infos.InfoScreen
@@ -27,89 +25,8 @@ import com.example.taskit.ui.view.profile.ProfileScreen
 import com.example.taskit.ui.view.settings.SettingsScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
+import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 
-/*
-@Composable
-fun BottomNavigationBar() {
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Button(
-            onClick = { /* ... */ },
-        ) {
-            Icon(
-                Icons.Filled.Send,
-                contentDescription = "Chat",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
-        }
-        Button(
-            onClick = { /* ... */ },
-        ) {
-            Icon(
-                Icons.Filled.AccountCircle,
-                contentDescription = "Account",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
-        }
-        Button(
-            onClick = { /* ... */ },
-        ) {
-            Icon(
-                Icons.Filled.Favorite,
-                contentDescription = "Favorite",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
-        }
-    }
-}
-
-<<<<<<< Updated upstream
-
-
-=======
- */
-/*
-@Composable
-fun BottomNavigationBar(navController: NavController){
-    BottomAppBar(){
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Button(
-                onClick = { /* ... */ },
-            ) {
-                Icon(
-                    Icons.Filled.Send,
-                    contentDescription = "Chat",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-            }
-            Button(
-                onClick = { /* ... */ },
-            ) {
-                Icon(
-                    Icons.Filled.AccountCircle,
-                    contentDescription = "Account",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-            }
-            Button(
-                onClick = { /* ... */ },
-            ) {
-                Icon(
-                    Icons.Filled.Favorite,
-                    contentDescription = "Favorite",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-            }
-        }
-    }
-}
-
- */
 
 @Composable
 fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
@@ -131,37 +48,40 @@ fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
     }
 }
 
-@Composable
-fun NavigationHost(tabItemViewModel: TabItemViewModel= viewModel()){
-    val navController = rememberNavController()
 
+@Composable
+fun HomeNavGraph(
+    navController: NavHostController,
+    profileViewModel: ProfileViewModel
+){
     NavHost(
-        navController = navController,
-        startDestination = "Home"
+        navController=navController,
+        route=NestedRoutes.Main.name,
+        startDestination = HomeRoutes.Home.name
     ){
-        composable(route ="Home"){
-            MainScreen(navController,tabItemViewModel.items)
+        composable(route = HomeRoutes.Home.name){
+            MainScreen(navController)
         }
         composable(route="Chat"){
-            ChatScreen(navController, tabItemViewModel.items )
+            ChatScreen()
         }
         composable(route="Favourites"){
 
         }
-        composable(route = "Profile"){
-            ProfileScreen(navController,tabItemViewModel.items)
-        }
-        composable(route = "Info"){
-            InfoScreen(navController, tabItemViewModel.items)
-        }
-        composable(route = "Settings"){
-            SettingsScreen(navController)
+        composable(HomeRoutes.Profile.name){
+            ProfileScreen(profileViewModel, onSignOut = {navController.navigate(NestedRoutes.Login.name)})
         }
         composable(route = "NewOffer"){
             NewOffer(navController)
         }
         composable(route = "Offers"){
             OfferScreen(navController)
+        }
+        composable(route = "Info"){
+            InfoScreen(navController)
+        }
+        composable(route = "Settings"){
+            SettingsScreen(navController)
         }
     }
 }
