@@ -10,7 +10,7 @@ import com.example.taskit.ui.viewmodel.navigation.TabItem
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun InfoScreen(navController: NavController, items: List<TabItem>){
+fun InfoScreen(navController: NavController){
     Scaffold(
         topBar = { ScreenTopBar("Info", navController)},
         content = { Text(text="Content for Info Screen") },

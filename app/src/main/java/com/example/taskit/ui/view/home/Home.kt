@@ -24,6 +24,8 @@ import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
+import com.example.taskit.ui.view.newOffer.NewOffer
+import com.example.taskit.ui.view.profile.OfferScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -80,8 +82,7 @@ fun ScreenTopBar(title: String, navController: NavController){
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(){
-    val navController = rememberNavController()
+fun MainScreen(navController: NavHostController){
     Scaffold(
         topBar = { MainTopBar(title = "Taskit", navController = navController ) },
         content = {

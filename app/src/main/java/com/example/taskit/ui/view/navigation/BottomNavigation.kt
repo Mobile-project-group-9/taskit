@@ -60,7 +60,7 @@ fun HomeNavGraph(
         startDestination = HomeRoutes.Home.name
     ){
         composable(route = HomeRoutes.Home.name){
-            MainScreen()
+            MainScreen(navController)
         }
         composable(route="Chat"){
             ChatScreen()
@@ -70,6 +70,18 @@ fun HomeNavGraph(
         }
         composable(HomeRoutes.Profile.name){
             ProfileScreen(profileViewModel, onSignOut = {navController.navigate(NestedRoutes.Login.name)})
+        }
+        composable(route = "NewOffer"){
+            NewOffer(navController)
+        }
+        composable(route = "Offers"){
+            OfferScreen(navController)
+        }
+        composable(route = "Info"){
+            InfoScreen(navController)
+        }
+        composable(route = "Settings"){
+            SettingsScreen(navController)
         }
     }
 }
