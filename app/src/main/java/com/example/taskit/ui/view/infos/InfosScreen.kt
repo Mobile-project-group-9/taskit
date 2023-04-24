@@ -1,12 +1,23 @@
 package com.example.taskit.ui.view.infos
 
 import android.annotation.SuppressLint
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.example.taskit.ui.view.home.ScreenTopBar
-import com.example.taskit.ui.viewmodel.navigation.TabItem
+
+@Composable
+fun ScreenTopBar(title: String, navController: NavController){
+    TopAppBar (
+        title={ Text(title) },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigateUp()}){
+                Icon(Icons.Filled.ArrowBack, contentDescription = null)
+            }
+        }
+    )
+}
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

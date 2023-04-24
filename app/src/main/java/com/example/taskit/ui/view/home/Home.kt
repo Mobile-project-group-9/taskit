@@ -57,18 +57,6 @@ fun MainTopBar(title: String, navController: NavController){
 }
 
 @Composable
-fun ScreenTopBar(title: String, navController: NavController){
-    TopAppBar (
-        title={ Text(title) },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigateUp()}){
-                Icon(Icons.Filled.ArrowBack, contentDescription = null)
-            }
-        }
-    )
-}
-
-@Composable
 fun TwoButtonRow(navController: NavController){
     MaterialTheme {
         Row(
@@ -79,33 +67,17 @@ fun TwoButtonRow(navController: NavController){
                 onClick = { navController.navigate("Offers") },
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text("Offers")
+                Text("My Offers")
             }
             Button(
                 onClick = { navController.navigate("NewOffer") },
                 modifier = Modifier.padding(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFFA500)),
             ) {
-                Text("Create an offer")
+                Text("Add an offer")
             }
         }
     }
-}
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun MainScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = { MainTopBar(title = "Offers", navController = navController ) },
-        content = {
-            Column {
-                TwoButtonRow(navController)
-                DropdownMenu()
-                Spacer(modifier = Modifier.height(30.dp))
-                OfferListScreen()
-            }
-        },
-    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -170,6 +142,22 @@ fun DropdownMenu() {
             }
         }
     }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun MainScreen(navController: NavHostController) {
+    Scaffold(
+        topBar = { MainTopBar(title = "Offers", navController = navController ) },
+        content = {
+            Column {
+                TwoButtonRow(navController)
+                DropdownMenu()
+                Spacer(modifier = Modifier.height(30.dp))
+                OfferListScreen()
+            }
+        },
+    )
 }
 
 @Preview
