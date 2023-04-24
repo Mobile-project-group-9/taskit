@@ -42,23 +42,15 @@ fun Home(
 
 @Composable
 fun MainTopBar(title: String, navController: NavController){
-    var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = { Text(title) },
         actions = {
             IconButton(
                 onClick = {
-                    expanded = !expanded
+                    navController.navigate("info")
                 }
             ){
-                Icon(Icons.Filled.MoreVert, contentDescription = null)
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }){
-                DropdownMenuItem(onClick = { navController.navigate("info") }) {
-                    Text("Info")
-                }
+                Icon(Icons.Filled.Info, contentDescription = "Info")
             }
         }
     )
