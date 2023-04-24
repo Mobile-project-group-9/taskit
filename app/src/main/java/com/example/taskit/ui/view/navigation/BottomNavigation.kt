@@ -1,6 +1,5 @@
 package com.example.taskit.ui.view.navigation
 
-
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,7 +26,6 @@ import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 
-
 @Composable
 fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
     var selectedItem by remember { mutableStateOf(0) }
@@ -47,7 +45,6 @@ fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
         }
     }
 }
-
 
 @Composable
 fun HomeNavGraph(

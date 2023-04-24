@@ -106,7 +106,6 @@ fun TwoButtonRow(navController: NavController){
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(navController: NavHostController) {
-    val navController = rememberNavController()
     Scaffold(
         topBar = { MainTopBar(title = "Taskit", navController = navController ) },
         content = {
