@@ -107,15 +107,10 @@ fun TwoButtonRow(navController: NavController){
 @Composable
 fun MainScreen(navController: NavHostController) {
     Scaffold(
-        topBar = { MainTopBar(title = "Taskit", navController = navController ) },
+        topBar = { MainTopBar(title = "Offers", navController = navController ) },
         content = {
             Column {
                 TwoButtonRow(navController)
-                Text(
-                    text = "Offers",
-                    style = MaterialTheme.typography.h4,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
                 DropdownMenu()
                 Spacer(modifier = Modifier.height(30.dp))
                 OfferListScreen()
