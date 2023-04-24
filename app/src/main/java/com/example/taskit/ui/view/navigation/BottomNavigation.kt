@@ -21,7 +21,6 @@ import com.example.taskit.ui.view.infos.InfoScreen
 import com.example.taskit.ui.view.newOffer.NewOffer
 import com.example.taskit.ui.view.profile.OfferScreen
 import com.example.taskit.ui.view.profile.ProfileScreen
-import com.example.taskit.ui.view.settings.SettingsScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
@@ -76,9 +75,6 @@ fun HomeNavGraph(
         }
         composable(route = "Info"){
             InfoScreen(navController)
-        }
-        composable(route = "Settings"){
-            SettingsScreen(navController)
         }
     }
 }

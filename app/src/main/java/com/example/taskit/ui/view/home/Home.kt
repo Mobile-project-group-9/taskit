@@ -59,9 +59,6 @@ fun MainTopBar(title: String, navController: NavController){
                 DropdownMenuItem(onClick = { navController.navigate("info") }) {
                     Text("Info")
                 }
-                DropdownMenuItem(onClick = { navController.navigate("settings") }) {
-                    Text("Settings")
-                }
             }
         }
     )
