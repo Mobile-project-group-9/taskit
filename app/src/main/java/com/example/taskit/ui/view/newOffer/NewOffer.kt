@@ -25,6 +25,7 @@ import com.example.taskit.ui.theme.TaskitTheme
 import android.util.Log
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
@@ -47,20 +48,43 @@ fun NewOffer(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            //.verticalScroll(rememberScrollState()),
     ){
         TopAppBar(
             modifier = Modifier.background(Color.Blue),
-            title = { Text(
-                text="New Offer" ,
-                fontSize = 25.sp ,
-                fontWeight= FontWeight.Bold,
-                color= Color.White)
-
+            title = {
+                Text(
+                    text = "New Offer",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
             },
             navigationIcon = {
-                IconButton(onClick = { navController.navigateUp()}){
+                IconButton(onClick = { navController.navigateUp() }) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                }
+            },
+            actions = {
+                Row(
+                    modifier = Modifier.padding(end = 16.dp)
+                ) {
+                    Button(onClick = {
+                        val job = hashMapOf<String, Any>(
+                            "category" to category,
+                            "description" to description,
+                            "location" to location,
+                            "price" to price,
+                            "title" to title,
+                            "userID" to userID.toString()
+                        )
+                        fireStore.collection("offers")
+                            .add(job)
+                            .addOnSuccessListener { d -> Log.i("***", "job added") }
+                            .addOnFailureListener { e -> Log.i("***", e.toString())}
+                    }) {
+                        Text("Submit")
+                    }
                 }
             }
         )
@@ -127,23 +151,6 @@ fun NewOffer(navController: NavController) {
                     Text(text = "Cancel", color = Color(0xFF0077be))
                 }
                  */
-                Button(onClick = {
-                    val job = hashMapOf<String, Any>(
-                        "category" to category,
-                        "description" to description,
-                        "location" to location,
-                        "price" to price,
-                        "title" to title,
-                        "userID" to userID.toString()
-                    )
-
-                    fireStore.collection("offers")
-                        .add(job)
-                        .addOnSuccessListener { d -> Log.i("***", "job added") }
-                        .addOnFailureListener { e -> Log.i("***", e.toString())}
-                }) {
-                    Text("Submit")
-                }
             }
         }
     }

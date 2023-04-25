@@ -44,38 +44,15 @@ fun Home(
 
 @Composable
 fun MainTopBar(title: String, navController: NavController){
-    var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = { Text(title) },
         actions = {
             IconButton(
                 onClick = {
-                    expanded = !expanded
+                    navController.navigate("info")
                 }
             ){
-                Icon(Icons.Filled.MoreVert, contentDescription = null)
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }){
-                DropdownMenuItem(onClick = { navController.navigate("info") }) {
-                    Text("Info")
-                }
-                DropdownMenuItem(onClick = { navController.navigate("settings") }) {
-                    Text("Settings")
-                }
-            }
-        }
-    )
-}
-
-@Composable
-fun ScreenTopBar(title: String, navController: NavController){
-    TopAppBar (
-        title={ Text(title) },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigateUp()}){
-                Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                Icon(Icons.Filled.Info, contentDescription = "Info")
             }
         }
     )
@@ -92,14 +69,14 @@ fun TwoButtonRow(navController: NavController){
                 onClick = { navController.navigate("Offers") },
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text("Offers")
+                Text("My Offers")
             }
             Button(
                 onClick = { navController.navigate("NewOffer") },
                 modifier = Modifier.padding(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFFA500)),
             ) {
-                Text("Create an offer")
+                Text("Add an offer")
             }
         }
     }
@@ -108,87 +85,15 @@ fun TwoButtonRow(navController: NavController){
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(navController: NavHostController) {
-    val navController = rememberNavController()
     Scaffold(
-        topBar = { MainTopBar(title = "Taskit", navController = navController ) },
+        topBar = { MainTopBar(title = "Offers", navController = navController ) },
         content = {
             Column {
                 TwoButtonRow(navController)
-                Text(
-                    text = "Offers",
-                    style = MaterialTheme.typography.h4,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-                DropdownMenu()
-                Spacer(modifier = Modifier.height(30.dp))
                 OfferListScreen()
             }
         },
     )
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun DropdownMenu() {
-    val listItems = arrayOf("Household", "Babysitting", "Gardening", "Other")
-    val contextForToast = LocalContext.current.applicationContext
-
-    // state of the menu
-    var expanded by remember {
-        mutableStateOf(false)
-    }
-
-    // remember the selected item
-    var selectedItem by remember {
-        mutableStateOf(listItems[0])
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        // box
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            // text field
-            TextField(
-                value = selectedItem,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text(text = "Label") },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = expanded
-                    )
-                },
-                colors = ExposedDropdownMenuDefaults.textFieldColors()
-            )
-
-            // menu
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                // this is a column scope
-                // all the items are added vertically
-                listItems.forEach { selectedOption ->
-                    // menu item
-                    DropdownMenuItem(onClick = {
-                        selectedItem = selectedOption
-                        Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
-                        expanded = false
-                    }) {
-                        Text(text = selectedOption)
-                    }
-                }
-
-            }
-        }
-    }
 }
 
 @Preview

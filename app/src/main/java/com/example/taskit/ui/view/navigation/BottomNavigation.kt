@@ -1,6 +1,5 @@
 package com.example.taskit.ui.view.navigation
 
-
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,11 +22,9 @@ import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.newOffer.NewOffer
 import com.example.taskit.ui.view.profile.OfferScreen
 import com.example.taskit.ui.view.profile.ProfileScreen
-import com.example.taskit.ui.view.settings.SettingsScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
-
 
 @Composable
 fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
@@ -48,7 +45,6 @@ fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
         }
     }
 }
-
 
 @Composable
 fun HomeNavGraph(
@@ -81,9 +77,6 @@ fun HomeNavGraph(
         }
         composable(route = "Info"){
             InfoScreen(navController)
-        }
-        composable(route = "Settings"){
-            SettingsScreen(navController)
         }
     }
 }
