@@ -80,70 +80,6 @@ fun TwoButtonRow(navController: NavController){
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun DropdownMenu() {
-    val listItems = arrayOf("Household", "Babysitting", "Gardening", "Other")
-    val contextForToast = LocalContext.current.applicationContext
-
-    // state of the menu
-    var expanded by remember {
-        mutableStateOf(false)
-    }
-
-    // remember the selected item
-    var selectedItem by remember {
-        mutableStateOf(listItems[0])
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        // box
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            // text field
-            TextField(
-                value = selectedItem,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text(text = "Label") },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = expanded
-                    )
-                },
-                colors = ExposedDropdownMenuDefaults.textFieldColors()
-            )
-
-            // menu
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                // this is a column scope
-                // all the items are added vertically
-                listItems.forEach { selectedOption ->
-                    // menu item
-                    DropdownMenuItem(onClick = {
-                        selectedItem = selectedOption
-                        Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
-                        expanded = false
-                    }) {
-                        Text(text = selectedOption)
-                    }
-                }
-
-            }
-        }
-    }
-}
-
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(navController: NavHostController) {
@@ -152,8 +88,6 @@ fun MainScreen(navController: NavHostController) {
         content = {
             Column {
                 TwoButtonRow(navController)
-                DropdownMenu()
-                Spacer(modifier = Modifier.height(30.dp))
                 OfferListScreen()
             }
         },
