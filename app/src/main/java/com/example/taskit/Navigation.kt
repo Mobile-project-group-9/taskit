@@ -64,7 +64,7 @@ fun Navigation(
         }
         authNavGraph(navController = navController, loginViewModel = loginViewModel, profileViewModel = profileViewModel )
         composable(route=NestedRoutes.Main.name){
-            Home(tabItemViewmodel,profileViewModel,loginViewModel)
+            Home(tabItemViewmodel,profileViewModel)
         }
     }
 }

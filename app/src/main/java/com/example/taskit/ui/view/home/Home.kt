@@ -32,13 +32,12 @@ import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 fun Home(
     tabItemViewmodel : TabItemViewModel = viewModel(),
     profileViewModel: ProfileViewModel,
-    loginViewModel: LoginViewModel,
     navController: NavHostController = rememberNavController()
 ){
     Scaffold(
         bottomBar = { MyBottomNavigationBar(tabItemViewmodel.items,navController ) }
     ) {
-        HomeNavGraph(navController,profileViewModel,loginViewModel)
+        HomeNavGraph(navController,profileViewModel)
     }
 }
 
