@@ -62,18 +62,19 @@ fun MainTopBar(title: String, navController: NavController){
 fun TwoButtonRow(navController: NavController){
     MaterialTheme {
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
             Button(
                 onClick = { navController.navigate("Offers") },
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp).size(width = 170.dp, height = 40.dp)
+                ,
             ) {
                 Text("My Offers")
             }
             Button(
                 onClick = { navController.navigate("NewOffer") },
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp).size(width = 170.dp, height = 40.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFFA500)),
             ) {
                 Text("Add an offer")
