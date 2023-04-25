@@ -1,5 +1,6 @@
 package com.example.taskit.ui.view.login
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -98,7 +99,7 @@ class LoginViewModel(
                         Toast.LENGTH_SHORT
                     ).show()
                     loginUiState = loginUiState.copy(isSuccessLogin = true)
-                    addInfo(loginUiState.firstNameSignUp,loginUiState.lastNameSignUp)
+                    addInfo(loginUiState.firstNameSignUp,loginUiState.lastNameSignUp,loginUiState.userNameSignUp)
                 } else {
                     Toast.makeText(
                         context,
@@ -162,36 +163,21 @@ class LoginViewModel(
     }
 
 
-    fun addInfo(first: String,last : String){
+    @SuppressLint("SuspiciousIndentation")
+    fun addInfo(first: String, last : String , email:String){
         val fireStore = FirebaseFirestore.getInstance()
         val collectionRef = fireStore.collection("users")
 
 
         val documentRef = collectionRef.document(repository.getUserId())
             documentRef
-                .set(mapOf("firstName" to first , "lastName" to last))
+                .set(mapOf("firstName" to first , "lastName" to last ,"email" to email ,"birthDate" to "" , "phoneNumber" to "" , "photo" to ""))
                 .addOnSuccessListener {
-                    Log.d("******" , " First name and Last name saved ")
+                    Log.d("******" , " Infos are saved ")
                 }
                 .addOnFailureListener{
                     Log.e("******",it.message.toString())
                 }
-        /*viewModelScope.launch {
-            user.value?.let{ fUser->
-                fireStore.collection("users")
-                    .document(repository.getUserId())
-                    .set(mapOf("firstName" to first))
-                    .addOnSuccessListener {
-                        Log.d("******" , " First name saved ")
-                    }
-                    .addOnFailureListener{
-                        Log.e("******",it.message.toString())
-                    }
-            }
-        }*/
-
-
-
 
     }
 

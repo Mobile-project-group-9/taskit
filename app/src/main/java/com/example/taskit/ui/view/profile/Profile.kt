@@ -42,7 +42,7 @@ import kotlinx.coroutines.tasks.await
 
 
 @Composable
-fun ProfileScreen(loginViewModel: LoginViewModel,profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
+fun ProfileScreen(profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
 
     val scroll= rememberScrollState()
 
@@ -65,7 +65,7 @@ fun ProfileScreen(loginViewModel: LoginViewModel,profileViewModel:ProfileViewMod
                     HistoryButton()
                 }
                 ProfileImage()
-                InfoBox(profileViewModel.userId,loginViewModel.loginUiState.userNameSignUp)
+                InfoBox(profileViewModel.userId)
             }
         },
     )
@@ -112,7 +112,7 @@ fun MiddleBox() {
 }
 
 @Composable
-fun InfoBox(user:String,email:String) {
+fun InfoBox(user:String) {
 
     val db = FirebaseFirestore.getInstance()
     val collectionRef = db.collection("users")
@@ -120,6 +120,7 @@ fun InfoBox(user:String,email:String) {
     var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
     var lastName by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var birthDate by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
 
@@ -132,6 +133,7 @@ fun InfoBox(user:String,email:String) {
                     userInfo = data.toMutableMap()
                     lastName = userInfo.getValue("lastName").toString()
                     firstName = userInfo.getValue("firstName").toString()
+                    email = userInfo.getValue("email").toString()
                     birthDate = userInfo.getValue("birthDate").toString()
                     phoneNumber = userInfo.getValue("phoneNumber").toString()
                 }

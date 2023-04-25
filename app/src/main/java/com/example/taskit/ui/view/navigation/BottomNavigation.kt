@@ -50,7 +50,6 @@ fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
 fun HomeNavGraph(
     navController: NavHostController,
     profileViewModel: ProfileViewModel,
-    loginViewModel: LoginViewModel
 ){
     NavHost(
         navController=navController,
@@ -67,7 +66,7 @@ fun HomeNavGraph(
 
         }
         composable(HomeRoutes.Profile.name){
-            ProfileScreen(loginViewModel,profileViewModel,onSignOut = {navController.navigate(NestedRoutes.Login.name)})
+            ProfileScreen(profileViewModel,onSignOut = {navController.navigate(NestedRoutes.Login.name)})
         }
         composable(route = "NewOffer"){
             NewOffer(navController)
