@@ -12,9 +12,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 data class Offer(val title: String, val description: String, val price: Double, val category: String)
 
+/*
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DropdownMenu() {
+fun DropdownMenu(onItemSelected: (String) -> Unit) {
     val listCategories = arrayOf("Household", "Babysitting", "Gardening", "Other")
     val contextForToast = LocalContext.current.applicationContext
 
@@ -64,6 +65,7 @@ fun DropdownMenu() {
                     // menu item
                     DropdownMenuItem(onClick = {
                         selectedCategory = selectedOption
+                        onItemSelected(selectedOption)
                         Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
                         expanded = false
                     }) {
@@ -75,17 +77,19 @@ fun DropdownMenu() {
         }
     }
 }
+ */
 
 @Composable
 fun OfferListScreen(category: String? = null) {
-    val offers by fetchOffers()
+    val offers by fetchOffers(category)
+    var selectedCategory by remember { mutableStateOf("")}
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        DropdownMenu()
-        Spacer(modifier = Modifier.height(30.dp))
+        //DropdownMenu(onItemSelected = { selectedCategory = it })
+        //Spacer(modifier = Modifier.height(30.dp))
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
