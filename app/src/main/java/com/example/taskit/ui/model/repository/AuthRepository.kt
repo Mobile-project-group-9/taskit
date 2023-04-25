@@ -17,17 +17,20 @@ class AuthRepository {
     suspend fun createUser(
         email:String,
         password:String,
+        firstName : String,
+        lastName : String,
         onComplete:(Boolean) ->Unit
     ) = withContext(Dispatchers.IO){
         Firebase.auth
             .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                if (it.isSuccessful){
+                if (it.isSuccessful) {
                     onComplete.invoke(true)
-                }else{
+                } else {
                     onComplete.invoke(false)
                 }
             }.await()
+
     }
     suspend fun login(
         email:String,

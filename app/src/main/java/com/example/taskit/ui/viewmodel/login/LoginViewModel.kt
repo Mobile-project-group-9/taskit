@@ -1,6 +1,7 @@
 package com.example.taskit.ui.view.login
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskit.ui.model.repository.AuthRepository
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -15,11 +20,16 @@ class LoginViewModel(
 ) : ViewModel() {
     val currentUser = repository.currentUser
 
+    var user = mutableStateOf<FirebaseUser?>(null)
+
     val hasUser: Boolean
         get() = repository.hasUser()
 
     var loginUiState by mutableStateOf(LoginUiState())
         private set
+
+
+
 
     fun onUserNameChange(userName: String) {
         loginUiState = loginUiState.copy(userName = userName)
@@ -27,6 +37,14 @@ class LoginViewModel(
 
     fun onPasswordNameChange(password: String) {
         loginUiState = loginUiState.copy(password = password)
+    }
+
+    fun onFirstNameChange(firstName: String ){
+        loginUiState = loginUiState.copy(firstNameSignUp = firstName)
+    }
+
+    fun onLastNameChange(lastname : String){
+        loginUiState = loginUiState.copy(lastNameSignUp = lastname)
     }
 
     fun onUserNameChangeSignup(userName: String) {
@@ -48,7 +66,9 @@ class LoginViewModel(
     private fun validateSignupForm() =
         loginUiState.userNameSignUp.isNotBlank() &&
                 loginUiState.passwordSignUp.isNotBlank() &&
-                loginUiState.confirmPasswordSignUp.isNotBlank()
+                loginUiState.confirmPasswordSignUp.isNotBlank()&&
+                loginUiState.firstNameSignUp.isNotBlank()&&
+                loginUiState.lastNameSignUp.isNotBlank()
 
 
     fun createUser(context: Context) = viewModelScope.launch {
@@ -67,7 +87,9 @@ class LoginViewModel(
             loginUiState = loginUiState.copy(signUpError = null)
             repository.createUser(
                 loginUiState.userNameSignUp,
-                loginUiState.passwordSignUp
+                loginUiState.passwordSignUp,
+                loginUiState.firstNameSignUp,
+                loginUiState.lastNameSignUp
             ) { isSuccessful ->
                 if (isSuccessful) {
                     Toast.makeText(
@@ -76,6 +98,7 @@ class LoginViewModel(
                         Toast.LENGTH_SHORT
                     ).show()
                     loginUiState = loginUiState.copy(isSuccessLogin = true)
+                    addInfo(loginUiState.firstNameSignUp,loginUiState.lastNameSignUp)
                 } else {
                     Toast.makeText(
                         context,
@@ -139,13 +162,51 @@ class LoginViewModel(
     }
 
 
+    fun addInfo(first: String,last : String){
+        val fireStore = FirebaseFirestore.getInstance()
+        val collectionRef = fireStore.collection("users")
+
+
+        val documentRef = collectionRef.document(repository.getUserId())
+            documentRef
+                .set(mapOf("firstName" to first , "lastName" to last))
+                .addOnSuccessListener {
+                    Log.d("******" , " First name and Last name saved ")
+                }
+                .addOnFailureListener{
+                    Log.e("******",it.message.toString())
+                }
+        /*viewModelScope.launch {
+            user.value?.let{ fUser->
+                fireStore.collection("users")
+                    .document(repository.getUserId())
+                    .set(mapOf("firstName" to first))
+                    .addOnSuccessListener {
+                        Log.d("******" , " First name saved ")
+                    }
+                    .addOnFailureListener{
+                        Log.e("******",it.message.toString())
+                    }
+            }
+        }*/
+
+
+
+
+    }
+
 }
+
+
+
 
 data class LoginUiState(
     val userName: String = "",
     val password: String = "",
     val userNameSignUp: String = "",
     val passwordSignUp: String = "",
+    val firstNameSignUp: String="",
+    val lastNameSignUp: String="",
     val confirmPasswordSignUp: String = "",
     val isLoading: Boolean = false,
     val isSuccessLogin: Boolean = false,

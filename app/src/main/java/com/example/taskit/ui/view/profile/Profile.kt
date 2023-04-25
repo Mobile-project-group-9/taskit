@@ -32,15 +32,17 @@ import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.login.LoginScreen
+import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
-
-
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
+import kotlinx.coroutines.tasks.await
 
 
 @Composable
-fun ProfileScreen(profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
+fun ProfileScreen(loginViewModel: LoginViewModel,profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
 
     val scroll= rememberScrollState()
 
@@ -63,7 +65,7 @@ fun ProfileScreen(profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
                     HistoryButton()
                 }
                 ProfileImage()
-                InfoBox()
+                InfoBox(profileViewModel.userId,loginViewModel.loginUiState.userNameSignUp)
             }
         },
     )
@@ -110,48 +112,196 @@ fun MiddleBox() {
 }
 
 @Composable
-fun InfoBox(){
-    Box(
-        modifier = Modifier
-            .padding(vertical = 450.dp)
-            .fillMaxSize()
+fun InfoBox(user:String,email:String) {
 
-    ){
-        Column(
-            modifier= Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+    val db = FirebaseFirestore.getInstance()
+    val collectionRef = db.collection("users")
+    val documentRef = collectionRef.document(user)
+    var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
+    var lastName by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }
+    var birthDate by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
 
-        ) {
-            TextField(
-                modifier= Modifier.fillMaxWidth(0.9f), shape= RoundedCornerShape(10.dp),
-                label= { Text(text = "First Name") },
-                leadingIcon = { Icon(imageVector = Icons.Default.Person , contentDescription = "personIcon") },
-                value = "", onValueChange = {} )
-            TextField(
-                modifier= Modifier.fillMaxWidth(0.9f), shape= RoundedCornerShape(10.dp),
-                label= { Text(text = "Last Name") },
-                leadingIcon = { Icon(imageVector = Icons.Default.Person , contentDescription = "personIcon") },
-                value = " ", onValueChange = {} )
-            TextField(modifier= Modifier.fillMaxWidth(0.9f), shape= RoundedCornerShape(10.dp),
-                label= { Text(text = "Email") },
-                leadingIcon = { Icon(imageVector = Icons.Default.Email , contentDescription = "emailIcon") },
-                value = "", onValueChange = {} )
-            TextField(
-                modifier= Modifier.fillMaxWidth(0.9f), shape= RoundedCornerShape(10.dp),
-                label= { Text(text = "date of birth ") },
-                leadingIcon = { Icon(imageVector = Icons.Default.DateRange , contentDescription = "dateIcon") },
-                value = "", onValueChange = {} )
-            TextField(
-                modifier= Modifier.fillMaxWidth(0.9f), shape= RoundedCornerShape(10.dp),
-                label= { Text(text = " phone number ") },
-                leadingIcon = { Icon(imageVector = Icons.Default.Call , contentDescription = "callIcon") },
-                value = "" , onValueChange = {})
+    LaunchedEffect(Unit) {
+        try {
+            val documentSnapshot = documentRef.get().await()
+            if (documentSnapshot != null) {
+                val data = documentSnapshot.data
+                if (data != null) {
+                    userInfo = data.toMutableMap()
+                    lastName = userInfo.getValue("lastName").toString()
+                    firstName = userInfo.getValue("firstName").toString()
+                    birthDate = userInfo.getValue("birthDate").toString()
+                    phoneNumber = userInfo.getValue("phoneNumber").toString()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("******", e.message.toString())
+        }
+    }
+        Info(firstName,lastName,birthDate,phoneNumber,email)
+}
 
+@Composable
+fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : String ,email:String){
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 450.dp)
+                    .fillMaxSize()
+
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+
+                ) {
+                    Card(
+                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .fillMaxWidth(0.9f)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(20.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "personIcon"
+                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(5.dp)
+                            ) {
+                                Text(
+                                    text = "First Name"
+                                )
+                                Text(
+                                    text = firstName
+                                )
+                            }
+                        }
+                    }
+                    Card(
+                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .fillMaxWidth(0.9f)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(20.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "personIcon"
+                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(5.dp)
+                            ) {
+                                Text(
+                                    text = "Last Name"
+                                )
+                                Text(
+                                    text = lastName
+                                )
+                            }
+                        }
+                    }
+                    Card(
+                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .fillMaxWidth(0.9f)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(20.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Email,
+                                contentDescription = "emailIcon"
+                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(5.dp)
+                            ) {
+                                Text(
+                                    text = "Email"
+                                )
+                                Text(
+                                    text = email
+                                )
+                            }
+                        }
+                    }
+                    Card(
+                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .fillMaxWidth(0.9f)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(20.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.DateRange,
+                                contentDescription = "dateIcon"
+                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(5.dp)
+                            ) {
+                                Text(
+                                    text = "Birth date"
+                                )
+                                Text(
+                                    text = birthDate
+                                )
+                            }
+                        }
+                    }
+                    Card(
+                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .fillMaxWidth(0.9f)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(20.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        ) {
+                            Icon(imageVector = Icons.Default.Call, contentDescription = "callIcon")
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(5.dp)
+                            ) {
+                                Text(
+                                    text = "Phone number"
+                                )
+                                Text(
+                                    text = phoneNumber
+                                )
+                            }
+                        }
+                    }
+                }
+
+            }
         }
 
-    }
-}
+
+
+
 
 @Composable
 fun ProfileImage(){

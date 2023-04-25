@@ -7,14 +7,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -22,8 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,16 +59,23 @@ fun LoginScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top=220.dp, start = 16.dp, end = 16.dp , bottom = 20.dp )
+                .padding(top = 220.dp, start = 16.dp, end = 16.dp, bottom = 20.dp)
                 .alpha(0.6f)
-                .clip(CutCornerShape(topStart = 8.dp, topEnd = 16.dp , bottomStart = 16.dp , bottomEnd = 8.dp))
+                .clip(
+                    CutCornerShape(
+                        topStart = 8.dp,
+                        topEnd = 16.dp,
+                        bottomStart = 16.dp,
+                        bottomEnd = 8.dp
+                    )
+                )
                 .background(Color.White)
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
-                modifier = Modifier.
-                fillMaxSize()
-                .padding(10.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -88,7 +101,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 12.dp , vertical = 22.dp ),
+                        .padding(horizontal = 12.dp, vertical = 22.dp),
                     value = loginUiState?.userName ?: "",
                     onValueChange = { loginViewModel?.onUserNameChange(it) },
                     leadingIcon = {
@@ -164,6 +177,7 @@ fun LoginScreen(
 
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignUpScreen(
     loginViewModel: LoginViewModel? = null,
@@ -173,10 +187,13 @@ fun SignUpScreen(
     val loginUiState = loginViewModel?.loginUiState
     val isError = loginUiState?.signUpError != null
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+
     ) {
         Image(
             painter = painterResource(id = R.drawable.background_sign_up),
@@ -230,8 +247,8 @@ fun SignUpScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    value = loginUiState?.userNameSignUp ?: "",
-                    onValueChange = { loginViewModel?.onUserNameChangeSignup(it) },
+                    value = loginUiState?.firstNameSignUp ?: "",
+                    onValueChange = { loginViewModel?.onFirstNameChange(it) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -239,9 +256,57 @@ fun SignUpScreen(
                         )
                     },
                     label = {
+                        Text(text = "First Name ")
+                    },
+                    isError = isError,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()} )
+                )
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    value = loginUiState?.lastNameSignUp ?: "",
+                    onValueChange = { loginViewModel?.onLastNameChange(it) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                        )
+                    },
+                    label = {
+                        Text(text = "Last Name ")
+                    },
+                    isError = isError,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()} )
+                )
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    value = loginUiState?.userNameSignUp ?: "",
+                    onValueChange = { loginViewModel?.onUserNameChangeSignup(it) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = null,
+                        )
+                    },
+                    label = {
                         Text(text = "Email")
                     },
-                    isError = isError
+                    isError = isError,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()} )
                 )
                 OutlinedTextField(
                     modifier = Modifier
@@ -259,7 +324,11 @@ fun SignUpScreen(
                         Text(text = "Password")
                     },
                     visualTransformation = PasswordVisualTransformation(),
-                    isError = isError
+                    isError = isError,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()} )
                 )
                 OutlinedTextField(
                     modifier = Modifier
@@ -277,10 +346,14 @@ fun SignUpScreen(
                         Text(text = "Confirm Password")
                     },
                     visualTransformation = PasswordVisualTransformation(),
-                    isError = isError
+                    isError = isError,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()} )
                 )
 
-                Button(onClick = { loginViewModel?.createUser(context) }) {
+                Button(onClick = { loginViewModel?.createUser(context)}) {
                     Text(text = "Sign Up")
                 }
                 Spacer(modifier = Modifier.size(16.dp))

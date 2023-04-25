@@ -19,6 +19,7 @@ import com.example.taskit.ui.view.home.Home
 import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.infos.InfoScreen
+import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.newOffer.NewOffer
 import com.example.taskit.ui.view.profile.OfferScreen
 import com.example.taskit.ui.view.profile.ProfileScreen
@@ -52,7 +53,8 @@ fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
 @Composable
 fun HomeNavGraph(
     navController: NavHostController,
-    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel,
+    loginViewModel: LoginViewModel
 ){
     NavHost(
         navController=navController,
@@ -69,7 +71,7 @@ fun HomeNavGraph(
 
         }
         composable(HomeRoutes.Profile.name){
-            ProfileScreen(profileViewModel, onSignOut = {navController.navigate(NestedRoutes.Login.name)})
+            ProfileScreen(loginViewModel,profileViewModel,onSignOut = {navController.navigate(NestedRoutes.Login.name)})
         }
         composable(route = "NewOffer"){
             NewOffer(navController)

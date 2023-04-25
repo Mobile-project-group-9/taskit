@@ -64,7 +64,7 @@ fun Navigation(
         }
         authNavGraph(navController = navController, loginViewModel = loginViewModel, profileViewModel = profileViewModel )
         composable(route=NestedRoutes.Main.name){
-            Home(tabItemViewmodel,profileViewModel)
+            Home(tabItemViewmodel,profileViewModel,loginViewModel)
         }
     }
 }
@@ -140,7 +140,7 @@ fun  NavGraphBuilder.authNavGraph(
         composable(route = LoginRoutes.Signup.name) {
             SignUpScreen(
                 onNavToHomePage = {
-                    navController.navigate(HomeRoutes.Home.name) {
+                    navController.navigate(NestedRoutes.Main.name) {
                         popUpTo(LoginRoutes.Signup.name) {
                             inclusive = true
                         }
