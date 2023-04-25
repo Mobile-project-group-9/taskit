@@ -20,6 +20,7 @@ import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.infos.InfoScreen
 import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.newOffer.NewOffer
+import com.example.taskit.ui.view.profile.EditScreen
 import com.example.taskit.ui.view.profile.OfferScreen
 import com.example.taskit.ui.view.profile.ProfileScreen
 import com.example.taskit.ui.viewmodel.navigation.TabItem
@@ -66,7 +67,7 @@ fun HomeNavGraph(
 
         }
         composable(HomeRoutes.Profile.name){
-            ProfileScreen(profileViewModel,onSignOut = {navController.navigate(NestedRoutes.Login.name)})
+            ProfileScreen(navController,profileViewModel,onSignOut = {navController.navigate(NestedRoutes.Login.name)})
         }
         composable(route = "NewOffer"){
             NewOffer(navController)
@@ -76,6 +77,9 @@ fun HomeNavGraph(
         }
         composable(route = "Info"){
             InfoScreen(navController)
+        }
+        composable(route="Edit"){
+            EditScreen(navController)
         }
     }
 }

@@ -42,7 +42,7 @@ import kotlinx.coroutines.tasks.await
 
 
 @Composable
-fun ProfileScreen(profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
+fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
 
     val scroll= rememberScrollState()
 
@@ -61,7 +61,7 @@ fun ProfileScreen(profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
                     modifier= Modifier.padding(horizontal = 68.dp, vertical = 300.dp) ,
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    EditButton()
+                    EditButton(navController)
                     HistoryButton()
                 }
                 ProfileImage()
@@ -321,9 +321,9 @@ fun ProfileImage(){
 }
 
 @Composable
-fun EditButton(){
+fun EditButton(navController: NavController){
     Button(
-        onClick = {  },
+        onClick = { navController.navigate("Edit")},
         modifier = Modifier.width(width=120.dp)
     ) {
         Row(
