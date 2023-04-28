@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -63,7 +64,6 @@ fun OfferScreen(navController: NavController) {
     }
 }
 
-
 @Composable
 fun UserOffersList() {
     val currentUserID = FirebaseAuth.getInstance().currentUser?.uid
@@ -98,13 +98,26 @@ fun UserOffersList() {
             .heightIn(max = 600.dp) // Set a fixed height constraint here
     ) {
         items(offers) { offer ->
-            OfferCard(offer = offer)
+            OfferCard(
+                offer = offer,
+                onDeleteOffer = {
+                    firestoreDB.collection("offers")
+                        .document(offer.title)
+                        .delete()
+                        .addOnSuccessListener {
+                            offers.remove(offer)
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w("UserOffersList", "Error deleting document: ", exception)
+                        }
+                }
+            )
         }
     }
 }
 
 @Composable
-fun OfferCard(offer: Offer) {
+fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
@@ -141,9 +154,14 @@ fun OfferCard(offer: Offer) {
                 style = MaterialTheme.typography.caption,
                 modifier = Modifier.padding(top = 8.dp)
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = onDeleteOffer) {
+                Text(text = "Delete")
+            }
         }
     }
 }
+
 
 data class Offer(
     val title: String,
