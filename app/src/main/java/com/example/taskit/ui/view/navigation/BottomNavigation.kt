@@ -79,7 +79,7 @@ fun HomeNavGraph(
             InfoScreen(navController)
         }
         composable(route="Edit"){
-            EditScreen(navController)
+            EditScreen(navController,profileViewModel)
         }
     }
 }

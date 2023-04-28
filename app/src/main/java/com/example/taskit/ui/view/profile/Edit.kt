@@ -1,10 +1,12 @@
 package com.example.taskit.ui.view.profile
 
+import android.service.autofill.DateTransformation
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,21 +14,32 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.taskit.R
+import com.example.taskit.ui.viewmodel.profile.Date
+import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
+import kotlin.math.absoluteValue
 
 @Composable
 
-fun EditScreen(navController: NavController){
+fun EditScreen(navController: NavController,profileViewModel: ProfileViewModel){
     val scroll= rememberScrollState()
 
     Scaffold(
@@ -48,8 +61,7 @@ fun EditScreen(navController: NavController){
                     .verticalScroll(scroll)
             ){
                 TopEdit()
-                EditBox()
-
+                EditBox(profileViewModel)
             }
         },
     )
@@ -75,7 +87,76 @@ fun TopEdit() {
 }
 
 @Composable
-fun EditBox() {
+fun InfoEdit(profileViewModel: ProfileViewModel) {
+
+    val db = FirebaseFirestore.getInstance()
+    val collectionRef = db.collection("users")
+    val documentRef = collectionRef.document(profileViewModel.userId)
+    var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
+    var lastName by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var birthDate by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+
+
+    LaunchedEffect(Unit) {
+        try {
+            val documentSnapshot = documentRef.get().await()
+            if (documentSnapshot != null) {
+                val data = documentSnapshot.data
+                if (data != null) {
+                    userInfo = data.toMutableMap()
+                    lastName = userInfo.getValue("lastName").toString()
+                    firstName = userInfo.getValue("firstName").toString()
+                    email = userInfo.getValue("email").toString()
+                    birthDate = userInfo.getValue("birthDate").toString()
+                    phoneNumber = userInfo.getValue("phoneNumber").toString()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("******", e.message.toString())
+        }
+    }
+
+}
+@Composable
+fun EditBox(profileViewModel: ProfileViewModel) {
+
+    val maxChar = 8
+    val db = FirebaseFirestore.getInstance()
+    val collectionRef = db.collection("users")
+    val documentRef = collectionRef.document(profileViewModel.userId)
+    var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
+    var updatedEmail by remember { mutableStateOf("") }
+    var updatedBirthDate by remember { mutableStateOf("") }
+    var updatedPhoneNumber by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+
+    LaunchedEffect(Unit) {
+        try {
+            val documentSnapshot = documentRef.get().await()
+            if (documentSnapshot != null) {
+                val data = documentSnapshot.data
+                if (data != null) {
+                    userInfo = data.toMutableMap()
+                    lastName = userInfo.getValue("lastName").toString()
+                    firstName = userInfo.getValue("firstName").toString()
+                    updatedEmail = userInfo.getValue("email").toString()
+                    updatedBirthDate = userInfo.getValue("birthDate").toString()
+                    updatedPhoneNumber = userInfo.getValue("phoneNumber").toString()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("******", e.message.toString())
+        }
+    }
+
+
+
     Box(
         modifier = Modifier
             .padding(vertical = 200.dp)
@@ -97,7 +178,8 @@ fun EditBox() {
                         contentDescription = "personIcon"
                     )
                 },
-                value = "", onValueChange = {}, readOnly = true)
+                value = firstName, onValueChange = {}, readOnly = true
+            )
             TextField(
                 modifier = Modifier.fillMaxWidth(0.9f), shape = RoundedCornerShape(10.dp),
                 label = { Text(text = "Last Name") },
@@ -107,7 +189,8 @@ fun EditBox() {
                         contentDescription = "personIcon"
                     )
                 },
-                value = " ", onValueChange = {}, readOnly = true)
+                value = lastName, onValueChange = {}, readOnly = true
+            )
             TextField(modifier = Modifier.fillMaxWidth(0.9f), shape = RoundedCornerShape(10.dp),
                 label = { Text(text = "Email") },
                 leadingIcon = {
@@ -116,9 +199,14 @@ fun EditBox() {
                         contentDescription = "emailIcon"
                     )
                 },
-                value = "", onValueChange = {})
+                value = updatedEmail,
+                onValueChange = {
+                    updatedEmail = it
+                }
+            )
             TextField(
                 modifier = Modifier.fillMaxWidth(0.9f), shape = RoundedCornerShape(10.dp),
+                singleLine = true,
                 label = { Text(text = "date of birth ") },
                 leadingIcon = {
                     Icon(
@@ -126,7 +214,12 @@ fun EditBox() {
                         contentDescription = "dateIcon"
                     )
                 },
-                value = "", onValueChange = {})
+                value = updatedBirthDate,
+                onValueChange = {
+                    if (it.length <= maxChar) updatedBirthDate = it
+                },
+                visualTransformation = Date("##/##/####")
+            )
             TextField(
                 modifier = Modifier.fillMaxWidth(0.9f), shape = RoundedCornerShape(10.dp),
                 label = { Text(text = " phone number ") },
@@ -136,17 +229,29 @@ fun EditBox() {
                         contentDescription = "callIcon"
                     )
                 },
-                value = "", onValueChange = {})
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                value = updatedPhoneNumber,
+                onValueChange = { it ->
+                    updatedPhoneNumber = it
+                }
+            )
 
             Button(
-                onClick = {  },
-                modifier = Modifier.width(width=120.dp)
+                onClick = {
+                    profileViewModel.updateProfile(updatedEmail,updatedBirthDate,updatedPhoneNumber,context)
+                    profileViewModel.updateEmail(updatedEmail)
+                          },
+                modifier = Modifier.width(width = 120.dp)
             ) {
                 Row(
-                ){
-                    Text(text="Edit", fontSize = 15.sp)
+                ) {
+                    Text(text = "Edit", fontSize = 15.sp)
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Icon(painter = painterResource(id = R.drawable.mode_edit_icon) , contentDescription = "Edit Icon" , modifier= Modifier.size(20.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.mode_edit_icon),
+                        contentDescription = "Edit Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
 
             }
@@ -154,4 +259,5 @@ fun EditBox() {
         }
 
     }
+
 }
