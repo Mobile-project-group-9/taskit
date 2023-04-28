@@ -1,43 +1,27 @@
 package com.example.taskit.ui.view.profile
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.widget.Toast
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.taskit.LoginRoutes
-import com.example.taskit.ui.theme.TaskitTheme
-import com.example.taskit.ui.view.chatBox.ChatScreen
-import com.example.taskit.ui.view.home.MainScreen
-import com.example.taskit.ui.view.login.LoginScreen
-import com.example.taskit.ui.view.login.LoginViewModel
-import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
-import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.tasks.await
 
 
@@ -45,6 +29,7 @@ import kotlinx.coroutines.tasks.await
 fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel,onSignOut: () -> Unit) {
 
     val scroll= rememberScrollState()
+
 
     Scaffold(
         topBar = { TopBar(profileViewModel,onSignOut) },
@@ -64,7 +49,7 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
                     EditButton(navController)
                     HistoryButton()
                 }
-                ProfileImage()
+                ProfileImage(navController)
                 InfoBox(profileViewModel.userId)
             }
         },
@@ -306,17 +291,11 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
 
 
 @Composable
-fun ProfileImage(){
+fun ProfileImage(navController: NavController){
     Box(
         modifier= Modifier.padding(vertical = 120.dp, horizontal = 150.dp)
     ) {
-        Image(
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(150.dp),
-            painter = painterResource(id = com.example.taskit.R.drawable.image),
-            contentDescription = "Profile Image "
-        )
+        ProfileImage1(navController = NavController)
     }
 }
 
@@ -355,6 +334,12 @@ fun HistoryButton(){
 
 @Composable
 fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
+    val notification = rememberSaveable { mutableStateOf("") }
+    if (notification.value.isNotEmpty()) {
+        Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
+        notification.value = ""
+    }
+
     var expanded by remember { mutableStateOf( false) }
     TopAppBar(
         modifier = Modifier.background(Color.Blue),
@@ -382,6 +367,11 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
                     onSignOut()
                 }) {
                     Text("Log out")
+
+                    Text(text = "Cancel",
+                        modifier = Modifier.clickable { notification.value = "Cancelled" })
+                    Text(text = "Save",
+                        modifier = Modifier.clickable { notification.value = "Profile updated" })
                 }
 
             }
