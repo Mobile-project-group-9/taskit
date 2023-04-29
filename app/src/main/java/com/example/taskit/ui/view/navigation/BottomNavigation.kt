@@ -20,9 +20,7 @@ import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.infos.InfoScreen
 import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.newOffer.NewOffer
-import com.example.taskit.ui.view.profile.EditScreen
-import com.example.taskit.ui.view.profile.OfferScreen
-import com.example.taskit.ui.view.profile.ProfileScreen
+import com.example.taskit.ui.view.profile.*
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
@@ -80,6 +78,12 @@ fun HomeNavGraph(
         }
         composable(route="Edit"){
             EditScreen(navController,profileViewModel)
+        }
+        composable("camera"){
+            CameraPermissionsView(profileViewModel)
+        }
+        composable("device"){
+            DeviceImage(navController, profileViewModel )
         }
     }
 }

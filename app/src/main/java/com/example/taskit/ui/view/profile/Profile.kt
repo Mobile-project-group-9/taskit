@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -49,7 +51,7 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
                     EditButton(navController)
                     HistoryButton()
                 }
-                ProfileImage(navController)
+                fetchImage(profileViewModel.userId,navController )
                 InfoBox(profileViewModel.userId)
             }
         },
@@ -287,15 +289,80 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
         }
 
 
+@Composable
+fun fetchImage(user: String , navController: NavController){
+    val db = FirebaseFirestore.getInstance()
+    val collectionRef = db.collection("users")
+    val documentRef = collectionRef.document(user)
+    var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
+    var urlImage by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        try {
+            val documentSnapshot = documentRef.get().await()
+            if (documentSnapshot != null) {
+                val data = documentSnapshot.data
+                if (data != null) {
+                    userInfo = data.toMutableMap()
+                    urlImage = userInfo.getValue("photo").toString()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("******", e.message.toString())
+        }
+    }
+    ProfileImage(navController,urlImage)
+}
 
 
 
 @Composable
-fun ProfileImage(navController: NavController){
+fun ProfileImage(navController: NavController , urlImage : String){
+    val showDialog = remember { mutableStateOf(false) }
+
     Box(
         modifier= Modifier.padding(vertical = 120.dp, horizontal = 150.dp)
     ) {
-        ProfileImage1(navController = NavController)
+
+        if (showDialog.value) {
+            AlertDialog(
+                onDismissRequest = { showDialog.value = false },
+                title = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(text = "Change Profile Photo")
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "emailIcon",
+                            modifier=Modifier.clickable { showDialog.value = false }
+                        )
+                    } },
+                text = { Text(text = "take or upload a photo ") },
+                confirmButton = {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
+                            Button(
+                                onClick = { navController.navigate("camera") }
+                            ) {
+                                Text(text = "Take A photo ")
+                            }
+                            Button(
+                                onClick = { navController.navigate("device") }
+                            ) {
+                                Text(text = " Upload photo")
+                            }
+                        }
+                }
+            )
+        }
+        Image(
+            painter= rememberImagePainter(data = urlImage),
+            contentDescription = "Profile Image",
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(150.dp)
+                .clickable { showDialog.value = true }
+        )
     }
 }
 
