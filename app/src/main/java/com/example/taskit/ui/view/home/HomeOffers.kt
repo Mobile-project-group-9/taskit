@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -36,25 +37,39 @@ fun OfferListScreen(category: String? = null) {
             }
         }
         if (selectedOffer != null) {
-        AlertDialog(
-            onDismissRequest = { selectedOffer = null },
-            title = { Text(text = "Offer Details") },
-            text = {
-                Column {
-                    Text(text = "Title: ${selectedOffer!!.title}")
-                    Text(text = "Description: ${selectedOffer!!.description}")
-                    Text(text = "Price: ${selectedOffer!!.price}€")
-                    Text(text = "Category: ${selectedOffer!!.category}")
-                }
-            },
-            confirmButton = {
-                Button(onClick = { selectedOffer = null }) {
-                    Text("Close")
+            OfferDetailsDialog(
+                offer = selectedOffer,
+                onDismiss = { selectedOffer = null }
+            )
+        }
+
+    }
+}
+
+@Composable
+fun OfferDetailsDialog(offer: Offer?, onDismiss: () -> Unit) {
+    if (offer != null) {
+        Dialog(onDismissRequest = onDismiss) {
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                elevation = 8.dp
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(text = "Title: ${offer.title}")
+                    Text(text = "Description: ${offer.description}")
+                    Text(text = "Price: ${offer.price}€")
+                    Text(text = "Category: ${offer.category}")
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = onDismiss) {
+                        Text("Close")
+                    }
                 }
             }
-        )
-    }
-
+        }
     }
 }
 
@@ -107,70 +122,3 @@ fun fetchOffers(category: String? = null): State<List<Offer>> {
 
     return offersState
 }
-
-/*
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun DropdownMenu(onItemSelected: (String) -> Unit) {
-    val listCategories = arrayOf("Household", "Babysitting", "Gardening", "Other")
-    val contextForToast = LocalContext.current.applicationContext
-
-    // state of the menu
-    var expanded by remember {
-        mutableStateOf(false)
-    }
-
-    // remember the selected item
-    var selectedCategory by remember {
-        mutableStateOf(listCategories[0])
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        // box
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = !expanded
-            }
-        ) {
-            // text field
-            TextField(
-                value = selectedCategory,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text(text = "Label") },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = expanded
-                    )
-                },
-                colors = ExposedDropdownMenuDefaults.textFieldColors()
-            )
-
-            // menu
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                // this is a column scope
-                // all the items are added vertically
-                listCategories.forEach { selectedOption ->
-                    // menu item
-                    DropdownMenuItem(onClick = {
-                        selectedCategory = selectedOption
-                        onItemSelected(selectedOption)
-                        Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
-                        expanded = false
-                    }) {
-                        Text(text = selectedOption)
-                    }
-                }
-
-            }
-        }
-    }
-}
- */
