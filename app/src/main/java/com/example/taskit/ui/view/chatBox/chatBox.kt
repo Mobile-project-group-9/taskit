@@ -1,5 +1,6 @@
 package com.example.taskit.ui.view.chatBox
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
@@ -7,7 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,12 +19,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.taskit.ui.theme.TaskitTheme
 import com.example.taskit.ui.view.newOffer.NewOffer
 import com.example.taskit.ui.viewmodel.navigation.TabItem
+import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ChatScreen(){
+fun ChatScreen(profileViewModel: ProfileViewModel){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -38,7 +43,7 @@ fun ChatScreen(){
             color= Color.White
         )
         ChatBox()
-        ProfileImage()
+        FetchImage(profileViewModel.userId)
     }
 
 }
@@ -67,18 +72,41 @@ fun ChatBox() {
 }
 
 @Composable
-fun ProfileImage(){
+fun FetchImage(user: String ){
+    val db = FirebaseFirestore.getInstance()
+    val collectionRef = db.collection("users")
+    val documentRef = collectionRef.document(user)
+    var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
+    var urlImage by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        try {
+            val documentSnapshot = documentRef.get().await()
+            if (documentSnapshot != null) {
+                val data = documentSnapshot.data
+                if (data != null) {
+                    userInfo = data.toMutableMap()
+                    urlImage = userInfo.getValue("photo").toString()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("******", e.message.toString())
+        }
+    }
+    ProfileImage(urlImage)
+}
+
+@Composable
+fun ProfileImage(urlImage :String ){
     Box(
         modifier= Modifier.padding(vertical = 80.dp, horizontal = 150.dp)
     ) {
         Image(
+            painter= rememberImagePainter(data = urlImage),
+            contentDescription = "Profile Image",
             modifier = Modifier
                 .clip(CircleShape)
-                .size(150.dp),
-            //.shadow(elevation=5.dp),
-
-            painter = painterResource(id = com.example.taskit.R.drawable.image),
-            contentDescription = "Profile Image "
+                .size(150.dp)
         )
     }
 }

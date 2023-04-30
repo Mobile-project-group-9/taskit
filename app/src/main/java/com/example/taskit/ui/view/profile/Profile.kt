@@ -296,6 +296,7 @@ fun fetchImage(user: String , navController: NavController){
     val documentRef = collectionRef.document(user)
     var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
     var urlImage by remember { mutableStateOf("") }
+
     LaunchedEffect(Unit) {
         try {
             val documentSnapshot = documentRef.get().await()

@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.navigation.HomeNavGraph
 import com.example.taskit.ui.view.navigation.MyBottomNavigationBar
+import com.example.taskit.ui.viewmodel.home.OfferViewModel
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 
@@ -32,12 +33,13 @@ import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 fun Home(
     tabItemViewmodel : TabItemViewModel = viewModel(),
     profileViewModel: ProfileViewModel,
+    offerViewModel: OfferViewModel,
     navController: NavHostController = rememberNavController()
 ){
     Scaffold(
         bottomBar = { MyBottomNavigationBar(tabItemViewmodel.items,navController ) }
     ) {
-        HomeNavGraph(navController,profileViewModel)
+        HomeNavGraph(navController,profileViewModel,offerViewModel)
     }
 }
 
@@ -84,13 +86,13 @@ fun TwoButtonRow(navController: NavController){
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController,offerViewModel: OfferViewModel) {
     Scaffold(
         topBar = { MainTopBar(title = "Offers", navController = navController ) },
         content = {
             Column {
                 TwoButtonRow(navController)
-                OfferListScreen()
+                OfferListScreen(offerViewModel = offerViewModel)
             }
         },
     )

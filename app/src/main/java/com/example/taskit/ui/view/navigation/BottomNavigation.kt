@@ -21,6 +21,7 @@ import com.example.taskit.ui.view.infos.InfoScreen
 import com.example.taskit.ui.view.login.LoginViewModel
 import com.example.taskit.ui.view.newOffer.NewOffer
 import com.example.taskit.ui.view.profile.*
+import com.example.taskit.ui.viewmodel.home.OfferViewModel
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
@@ -49,6 +50,7 @@ fun MyBottomNavigationBar(items: List<TabItem>, navController: NavController){
 fun HomeNavGraph(
     navController: NavHostController,
     profileViewModel: ProfileViewModel,
+    offerViewModel: OfferViewModel
 ){
     NavHost(
         navController=navController,
@@ -56,10 +58,10 @@ fun HomeNavGraph(
         startDestination = HomeRoutes.Home.name
     ){
         composable(route = HomeRoutes.Home.name){
-            MainScreen(navController)
+            MainScreen(navController,offerViewModel)
         }
         composable(route="Chat"){
-            ChatScreen()
+            ChatScreen(profileViewModel)
         }
         composable(route="Favourites"){
 

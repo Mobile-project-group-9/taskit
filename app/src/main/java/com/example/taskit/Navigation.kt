@@ -23,6 +23,7 @@ import com.example.taskit.ui.view.profile.CameraPermissionsView
 
 
 import com.example.taskit.ui.view.profile.ProfileScreen
+import com.example.taskit.ui.viewmodel.home.OfferViewModel
 import com.example.taskit.ui.viewmodel.navigation.TabItem
 import com.example.taskit.ui.viewmodel.navigation.TabItemViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
@@ -52,6 +53,7 @@ fun Navigation(
     navController: NavHostController= rememberNavController(),
     loginViewModel: LoginViewModel,
     profileViewModel: ProfileViewModel,
+    offerViewModel: OfferViewModel,
     tabItemViewmodel : TabItemViewModel = viewModel()
 ){
     NavHost(
@@ -64,7 +66,7 @@ fun Navigation(
         }
         authNavGraph(navController = navController, loginViewModel = loginViewModel, profileViewModel = profileViewModel )
         composable(route=NestedRoutes.Main.name){
-            Home(tabItemViewmodel,profileViewModel)
+            Home(tabItemViewmodel,profileViewModel,offerViewModel)
         }
         composable("camera") {
             CameraPermissionsView(profileViewModel)

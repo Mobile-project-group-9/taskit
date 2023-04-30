@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -165,19 +167,31 @@ class LoginViewModel(
 
     @SuppressLint("SuspiciousIndentation")
     fun addInfo(first: String, last : String , email:String){
+        val storage = Firebase.storage
         val fireStore = FirebaseFirestore.getInstance()
         val collectionRef = fireStore.collection("users")
 
 
-        val documentRef = collectionRef.document(repository.getUserId())
+        val imageReference = storage.reference.child("photosProfile/image.png")
+        imageReference.downloadUrl.addOnSuccessListener {
+            uri -> val imageUrl= uri.toString()
+            val documentRef = collectionRef.document(repository.getUserId())
             documentRef
-                .set(mapOf("firstName" to first , "lastName" to last ,"email" to email ,"birthDate" to "" , "phoneNumber" to "" , "photo" to ""))
+                .set(mapOf("firstName" to first , "lastName" to last ,"email" to email ,"birthDate" to "" , "phoneNumber" to "" , "photo" to imageUrl))
                 .addOnSuccessListener {
                     Log.d("******" , " Infos are saved ")
                 }
                 .addOnFailureListener{
                     Log.e("******",it.message.toString())
                 }
+
+        }
+            .addOnFailureListener {
+                error -> Log.e("******","image non trouvée")
+            }
+
+
+
 
     }
 
