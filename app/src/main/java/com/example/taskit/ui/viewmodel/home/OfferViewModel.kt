@@ -75,7 +75,7 @@ class OfferViewModel (private val repository: StorageRepository = StorageReposit
         val favoritesRef = collectionRef.document(repository.getUserId())
 
 
-        favoritesRef.update("offers",FieldValue.delete())
+        favoritesRef.update("offerIds", FieldValue.arrayRemove(offerId))
             .addOnSuccessListener {
                 Log.d("******", "offer removed from favorites successfully")
                 onSuccess()
