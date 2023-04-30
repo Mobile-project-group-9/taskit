@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -77,13 +78,14 @@ fun UserOffersList() {
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
+                    val id = document.id
                     val title = document.getString("title") ?: ""
                     val description = document.getString("description") ?: ""
                     val price = document.getDouble("price") ?: 0.0
                     val category = document.getString("category") ?: ""
                     val location = document.getString("location") ?: ""
                     val userID = document.getString("userID") ?: ""
-                    val offer = Offer(title, description, price, category, location, userID)
+                    val offer = Offer(id, title, description, price, category, location, userID)
                     offers.add(offer)
                 }
             }
@@ -97,15 +99,15 @@ fun UserOffersList() {
             .fillMaxWidth()
             .heightIn(max = 600.dp) // Set a fixed height constraint here
     ) {
-        items(offers) { offer ->
+        itemsIndexed(offers) { index, offer ->
             OfferCard(
                 offer = offer,
                 onDeleteOffer = {
                     firestoreDB.collection("offers")
-                        .document(offer.title)
+                        .document(offer.id)
                         .delete()
                         .addOnSuccessListener {
-                            offers.remove(offer)
+                            offers.removeAt(index)
                         }
                         .addOnFailureListener { exception ->
                             Log.w("UserOffersList", "Error deleting document: ", exception)
@@ -113,8 +115,10 @@ fun UserOffersList() {
                 }
             )
         }
+
     }
 }
+
 
 @Composable
 fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
@@ -162,8 +166,8 @@ fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
     }
 }
 
-
 data class Offer(
+    val id: String,
     val title: String,
     val description: String,
     val price: Double,
