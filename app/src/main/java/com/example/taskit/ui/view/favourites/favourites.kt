@@ -39,7 +39,7 @@ fun FavouriteScreen(profileViewModel: ProfileViewModel , offerViewModel: OfferVi
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
+                    //.height(25.dp)
                     .background(Color(0xFF0077be))
                     .clip(shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
             ) {
