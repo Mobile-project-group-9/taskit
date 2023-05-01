@@ -1,6 +1,7 @@
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -8,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -89,7 +91,9 @@ fun OfferCard(offer: Offer, isFavorite : Boolean , onFavoriteClicked:() -> Unit,
             .clickable { onClick(offer) },
         elevation = 4.dp
     ) {
+        Column(){
         Row(
+            modifier=Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
@@ -106,24 +110,30 @@ fun OfferCard(offer: Offer, isFavorite : Boolean , onFavoriteClicked:() -> Unit,
                     style = MaterialTheme.typography.caption
                 )
             }
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween
+            IconButton(
+                onClick = { onFavoriteClicked() }
             ) {
-                IconButton(
-                    onClick = {onFavoriteClicked()}
-                ){
-                    Icon(
-                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = if (isFavorite) "Remove from favorites " else " Add to favorites"
-                    )
+                Icon(
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = if (isFavorite) "Remove from favorites " else " Add to favorites"
+                )
+            }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(end =5.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Box(Modifier.weight(1f)){
+
                 }
-                Button( onClick = {onApplicationClicked()},
-                    modifier = Modifier.width(width=120.dp)
+                Button(
+                    onClick = { onApplicationClicked() },
+                    modifier = Modifier
+                        .width(90.dp)
                 ) {
-                    Text(text="Apply", fontSize = 15.sp)
+                    Text(text = "Apply", fontSize = 15.sp)
                 }
             }
-           
         }
     }
 }
