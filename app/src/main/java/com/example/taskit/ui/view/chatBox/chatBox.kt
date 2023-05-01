@@ -32,7 +32,7 @@ fun ChatScreen(profileViewModel: ProfileViewModel){
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            //.verticalScroll(rememberScrollState())
             .background(Color.Blue)
     ){
         Text(

@@ -43,12 +43,10 @@ fun NewOffer(navController: NavController) {
     var price by remember { mutableStateOf(0) }
     var title by remember { mutableStateOf("") }
     val userID = FirebaseAuth.getInstance().currentUser?.uid;
-    var showOtherCat = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            //.verticalScroll(rememberScrollState()),
     ){
         TopAppBar(
             modifier = Modifier.background(Color.Blue),
@@ -103,18 +101,6 @@ fun NewOffer(navController: NavController) {
                     .width(300.dp)
                     .background(Color.White),)
             CategoryList(onClick = {category = it})
-            //showOtherCat.value = true
-
-
-            /*
-            OutlinedTextField(value =category , onValueChange = {category=it},
-                modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 5.dp)
-                    .width(300.dp)
-                    .background(Color.White),
-                label = {Text(text = "Other category")}
-            )
-             */
 
             Text(text = "Location :", fontSize = 20.sp, color = Color.Black, modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp))
             OutlinedTextField(value =location , onValueChange = {location=it},
@@ -144,13 +130,6 @@ fun NewOffer(navController: NavController) {
                     .padding(horizontal = 80.dp, vertical = 10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                /*Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-                ) {
-                    Text(text = "Cancel", color = Color(0xFF0077be))
-                }
-                 */
             }
         }
     }
