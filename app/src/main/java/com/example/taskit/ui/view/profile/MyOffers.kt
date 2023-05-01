@@ -22,6 +22,16 @@ import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+data class Offer(
+    val id: String,
+    val title: String,
+    val description: String,
+    val price: Double,
+    val category: String,
+    val location: String,
+    val userID: String
+)
+
 @Composable
 fun OfferScreen(navController: NavController) {
     Column(
@@ -105,7 +115,6 @@ fun UserOffersList() {
     }
 }
 
-
 @Composable
 fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
     Card(
@@ -151,106 +160,3 @@ fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
         }
     }
 }
-
-data class Offer(
-    val id: String,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val category: String,
-    val location: String,
-    val userID: String
-)
-
-
-/*
-@Composable
-fun OfferBox() {
-
-
-    /*
-    Box(
-        modifier = Modifier
-            .padding(vertical = 150.dp)
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .clip(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp))
-            .background(Color.White)
-
-    ){
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(50.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 120.dp, vertical = 20.dp)
-        ) {
-            Text(
-                text = "Offers",
-                style= TextStyle(
-                    fontSize=20.sp,
-                    shadow = Shadow(
-                        offset = Offset(2.2f,2.2f),
-                        blurRadius = 1.5f
-                    )
-                )
-
-            )
-            Text(
-                text = "Tasks",
-                fontSize = 20.sp,
-            )
-        }
-        Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier= Modifier.padding(vertical = 70.dp, horizontal = 20.dp),
-        ){
-            OfferCard("offer 1"," Assyriis victum distenta unius quaeritat idem placet pube sine sed.",com.example.taskit.R.drawable.image_offer)
-            OfferCard("offer 2"," Assyriis victum distenta unius quaeritat idem placet pube sine sed.",com.example.taskit.R.drawable.image_offer)
-            OfferCard("offer 3"," Assyriis victum distenta unius quaeritat idem placet pube sine sed.",com.example.taskit.R.drawable.image_offer)
-        }
-
-    }
-
-     */
-}
-
-@Composable
-fun OfferCard(OfferName:String,Description:String,photoId:Int){
-    Card(
-
-        backgroundColor= Color(color=0xFFF6EFEF),
-        shape= RoundedCornerShape(20.dp),
-        modifier= Modifier
-            .height(100.dp)
-            .fillMaxWidth(0.95f)
-            .clickable { }
-    ){
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 10.dp)
-        ){
-            Image(
-                modifier = Modifier
-                    .clip(RectangleShape)
-                    .size(120.dp),
-                painter = painterResource(id = photoId),
-                contentDescription = "Offer Image "
-            )
-            Column() {
-                Text(
-                    text=OfferName,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text=Description,
-                    fontSize = 12.sp,
-                )
-            }
-        }
-
-    }
-
-}
-
- */
