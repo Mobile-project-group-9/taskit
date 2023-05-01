@@ -1,6 +1,5 @@
 package com.example.taskit.ui.viewmodel.home
 
-import Offer
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
@@ -11,6 +10,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+
+data class MyOffers(
+    val id: String,
+    val title: String,
+    val description: String,
+    val price: Double,
+    val category: String,
+    val location: String,
+    val userID: String,
+    var isFavorite: Boolean = false
+)
 
 class OfferViewModel (private val repository: StorageRepository = StorageRepository()): ViewModel() {
 

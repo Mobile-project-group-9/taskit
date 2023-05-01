@@ -1,7 +1,5 @@
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -9,17 +7,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskit.ui.viewmodel.home.OfferViewModel
 import androidx.compose.ui.window.Dialog
+import com.example.taskit.ui.viewmodel.home.Offer
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-data class Offer(val id:String ,val title: String, val description: String, val price: Double, val category: String , var isFavorite: Boolean = false )
 
 @Composable
 fun OfferListScreen(category: String? = null , offerViewModel: OfferViewModel) {
@@ -30,8 +26,6 @@ fun OfferListScreen(category: String? = null , offerViewModel: OfferViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        //DropdownMenu(onItemSelected = { selectedCategory = it })
-        //Spacer(modifier = Modifier.height(30.dp))
         var selectedOffer by remember {
             mutableStateOf<Offer?>(null)
         }

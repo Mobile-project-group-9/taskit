@@ -1,6 +1,5 @@
 package com.example.taskit.ui.view.favourites
 
-import Offer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.taskit.ui.view.chatBox.FetchImage
+import com.example.taskit.ui.viewmodel.home.Offer
 import com.example.taskit.ui.viewmodel.home.OfferViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 import com.google.firebase.firestore.CollectionReference
@@ -39,7 +39,7 @@ fun FavouriteScreen(profileViewModel: ProfileViewModel , offerViewModel: OfferVi
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
+                    //.height(25.dp)
                     .background(Color(0xFF0077be))
                     .clip(shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
             ) {

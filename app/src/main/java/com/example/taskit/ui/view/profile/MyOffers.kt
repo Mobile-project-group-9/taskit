@@ -1,38 +1,25 @@
 package com.example.taskit.ui.view.profile
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.taskit.ui.theme.TaskitTheme
-import com.example.taskit.ui.view.home.Home
+import com.example.taskit.ui.viewmodel.home.MyOffers
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -70,7 +57,7 @@ fun UserOffersList() {
     val currentUserID = FirebaseAuth.getInstance().currentUser?.uid
     val firestoreDB = FirebaseFirestore.getInstance()
 
-    val offers = remember { mutableStateListOf<Offer>() }
+    val offers = remember { mutableStateListOf<MyOffers>() }
 
     LaunchedEffect(currentUserID) {
         firestoreDB.collection("offers")
@@ -85,7 +72,7 @@ fun UserOffersList() {
                     val category = document.getString("category") ?: ""
                     val location = document.getString("location") ?: ""
                     val userID = document.getString("userID") ?: ""
-                    val offer = Offer(id, title, description, price, category, location, userID)
+                    val offer = MyOffers(id, title, description, price, category, location, userID)
                     offers.add(offer)
                 }
             }
@@ -119,9 +106,8 @@ fun UserOffersList() {
     }
 }
 
-
 @Composable
-fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
+fun OfferCard(offer: MyOffers, onDeleteOffer: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
@@ -165,106 +151,3 @@ fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
         }
     }
 }
-
-data class Offer(
-    val id: String,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val category: String,
-    val location: String,
-    val userID: String
-)
-
-
-/*
-@Composable
-fun OfferBox() {
-
-
-    /*
-    Box(
-        modifier = Modifier
-            .padding(vertical = 150.dp)
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .clip(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp))
-            .background(Color.White)
-
-    ){
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(50.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 120.dp, vertical = 20.dp)
-        ) {
-            Text(
-                text = "Offers",
-                style= TextStyle(
-                    fontSize=20.sp,
-                    shadow = Shadow(
-                        offset = Offset(2.2f,2.2f),
-                        blurRadius = 1.5f
-                    )
-                )
-
-            )
-            Text(
-                text = "Tasks",
-                fontSize = 20.sp,
-            )
-        }
-        Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier= Modifier.padding(vertical = 70.dp, horizontal = 20.dp),
-        ){
-            OfferCard("offer 1"," Assyriis victum distenta unius quaeritat idem placet pube sine sed.",com.example.taskit.R.drawable.image_offer)
-            OfferCard("offer 2"," Assyriis victum distenta unius quaeritat idem placet pube sine sed.",com.example.taskit.R.drawable.image_offer)
-            OfferCard("offer 3"," Assyriis victum distenta unius quaeritat idem placet pube sine sed.",com.example.taskit.R.drawable.image_offer)
-        }
-
-    }
-
-     */
-}
-
-@Composable
-fun OfferCard(OfferName:String,Description:String,photoId:Int){
-    Card(
-
-        backgroundColor= Color(color=0xFFF6EFEF),
-        shape= RoundedCornerShape(20.dp),
-        modifier= Modifier
-            .height(100.dp)
-            .fillMaxWidth(0.95f)
-            .clickable { }
-    ){
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 10.dp)
-        ){
-            Image(
-                modifier = Modifier
-                    .clip(RectangleShape)
-                    .size(120.dp),
-                painter = painterResource(id = photoId),
-                contentDescription = "Offer Image "
-            )
-            Column() {
-                Text(
-                    text=OfferName,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text=Description,
-                    fontSize = 12.sp,
-                )
-            }
-        }
-
-    }
-
-}
-
- */

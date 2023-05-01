@@ -9,3 +9,11 @@ class HomeViewModel(
     fun signOut() = repository.signOut()
 }
 
+data class Offer(
+    val id:String ,
+    val title: String,
+    val description: String,
+    val price: Double,
+    val category: String ,
+    var isFavorite: Boolean = false
+)
