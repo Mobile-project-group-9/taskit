@@ -19,18 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.taskit.ui.viewmodel.home.MyOffers
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-
-data class Offer(
-    val id: String,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val category: String,
-    val location: String,
-    val userID: String
-)
 
 @Composable
 fun OfferScreen(navController: NavController) {
@@ -66,7 +57,7 @@ fun UserOffersList() {
     val currentUserID = FirebaseAuth.getInstance().currentUser?.uid
     val firestoreDB = FirebaseFirestore.getInstance()
 
-    val offers = remember { mutableStateListOf<Offer>() }
+    val offers = remember { mutableStateListOf<MyOffers>() }
 
     LaunchedEffect(currentUserID) {
         firestoreDB.collection("offers")
@@ -81,7 +72,7 @@ fun UserOffersList() {
                     val category = document.getString("category") ?: ""
                     val location = document.getString("location") ?: ""
                     val userID = document.getString("userID") ?: ""
-                    val offer = Offer(id, title, description, price, category, location, userID)
+                    val offer = MyOffers(id, title, description, price, category, location, userID)
                     offers.add(offer)
                 }
             }
@@ -116,7 +107,7 @@ fun UserOffersList() {
 }
 
 @Composable
-fun OfferCard(offer: Offer, onDeleteOffer: () -> Unit) {
+fun OfferCard(offer: MyOffers, onDeleteOffer: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,

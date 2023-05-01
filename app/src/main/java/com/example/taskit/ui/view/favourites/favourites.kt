@@ -1,6 +1,5 @@
 package com.example.taskit.ui.view.favourites
 
-import Offer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.taskit.ui.view.chatBox.FetchImage
+import com.example.taskit.ui.viewmodel.home.Offer
 import com.example.taskit.ui.viewmodel.home.OfferViewModel
 import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
 import com.google.firebase.firestore.CollectionReference
