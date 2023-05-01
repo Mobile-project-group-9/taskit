@@ -49,7 +49,7 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     EditButton(navController)
-                    HistoryButton()
+                    HistoryButton(navController)
                 }
                 fetchImage(profileViewModel.userId,navController )
                 InfoBox(profileViewModel.userId)
@@ -369,6 +369,7 @@ fun ProfileImage(navController: NavController , urlImage : String){
 
 @Composable
 fun EditButton(navController: NavController){
+
     Button(
         onClick = { navController.navigate("Edit")},
         modifier = Modifier.width(width=120.dp)
@@ -384,21 +385,67 @@ fun EditButton(navController: NavController){
 }
 
 @Composable
-fun HistoryButton(){
-    Button(
-        onClick = {  },
-        modifier = Modifier.width(width=120.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Text(text="History", fontSize = 15.sp)
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Icon(painter = painterResource(id= com.example.taskit.R.drawable.work_history_icon) , contentDescription = "work history Icon", modifier = Modifier.size(20.dp))
+fun HistoryButton(navController : NavController ) {
+
+    val showDialog = remember { mutableStateOf(false) }
+
+        if (showDialog.value) {
+            AlertDialog(
+                onDismissRequest = { showDialog.value = false },
+                title = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(text = " Applications and Offers ")
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "close Icon",
+                            modifier = Modifier.clickable { showDialog.value = false }
+                        )
+                    }
+                },
+                text = { Text(text = " check the task that you applied to it and the offers of application that you received ") },
+                confirmButton = {
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Button(
+                            onClick = { navController.navigate("applications") }
+                        ) {
+                            Text(text = " Applications ")
+                        }
+                        Button(
+                            onClick = { navController.navigate("offers") }
+                        ) {
+                            Text(text = " Offers ")
+                        }
+                    }
+                }
+            )
         }
+
+        Button(
+            onClick = { showDialog.value = true },
+            modifier = Modifier.width(width = 120.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "History", fontSize = 15.sp)
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Icon(
+                    painter = painterResource(id = com.example.taskit.R.drawable.work_history_icon),
+                    contentDescription = "work history Icon",
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
     }
 
-}
 
 @Composable
 fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {

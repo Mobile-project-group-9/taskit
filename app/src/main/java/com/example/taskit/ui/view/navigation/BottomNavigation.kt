@@ -88,6 +88,9 @@ fun HomeNavGraph(
         composable("device"){
             DeviceImage(navController, profileViewModel )
         }
+        composable("applications"){
+            TaskScreen(profileViewModel)
+        }
     }
 }
 
