@@ -47,7 +47,7 @@ fun EditScreen(navController: NavController,profileViewModel: ProfileViewModel){
             modifier = Modifier.background(Color.Blue),
             title = { Text(
                 modifier = Modifier.padding(top=10.dp, start = 20.dp),
-                text="Taskit" ,
+                text="Edit" ,
                 fontSize = 30.sp ,
                 fontWeight= FontWeight.Bold,
                 color= Color.White)
@@ -60,7 +60,6 @@ fun EditScreen(navController: NavController,profileViewModel: ProfileViewModel){
                     .fillMaxSize()
                     .verticalScroll(scroll)
             ){
-                TopEdit()
                 EditBox(profileViewModel)
             }
         },
@@ -68,27 +67,7 @@ fun EditScreen(navController: NavController,profileViewModel: ProfileViewModel){
 }
 
 @Composable
-fun TopEdit() {
-    Box(
-        modifier = Modifier
-            .height(150.dp)
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-            .background(Color.Blue)
-    ){
-        Text(
-            modifier = Modifier.padding(top=10.dp, start = 20.dp),
-            text="Edit Page" ,
-            fontSize = 30.sp ,
-            fontWeight= FontWeight.Bold,
-            color= Color.White
-        )
-    }
-}
-
-@Composable
 fun InfoEdit(profileViewModel: ProfileViewModel) {
-
     val db = FirebaseFirestore.getInstance()
     val collectionRef = db.collection("users")
     val documentRef = collectionRef.document(profileViewModel.userId)

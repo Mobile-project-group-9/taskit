@@ -39,7 +39,7 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scroll)
+                    .verticalScroll(scroll),
             ){
                 MiddleBox()
                 Row(
