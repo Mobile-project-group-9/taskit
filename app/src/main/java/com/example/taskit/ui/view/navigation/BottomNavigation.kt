@@ -16,6 +16,7 @@ import com.example.taskit.NestedRoutes
 import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.Home
 import com.example.taskit.ui.view.chatBox.ChatScreen
+import com.example.taskit.ui.view.favourites.FavouriteScreen
 import com.example.taskit.ui.view.home.MainScreen
 import com.example.taskit.ui.view.infos.InfoScreen
 import com.example.taskit.ui.view.login.LoginViewModel
@@ -64,7 +65,7 @@ fun HomeNavGraph(
             ChatScreen(profileViewModel)
         }
         composable(route="Favourites"){
-
+            FavouriteScreen(profileViewModel, offerViewModel)
         }
         composable(HomeRoutes.Profile.name){
             ProfileScreen(navController,profileViewModel,onSignOut = {navController.navigate(NestedRoutes.Login.name)})

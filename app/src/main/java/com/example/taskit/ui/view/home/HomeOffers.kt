@@ -11,12 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.taskit.ui.viewmodel.home.OfferViewModel
 import androidx.compose.ui.window.Dialog
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-data class Offer(val id:String ,val title: String, val description: String, val price: Double, val category: String , var isFavorite: Boolean = false)
+data class Offer(val id:String ,val title: String, val description: String, val price: Double, val category: String , var isFavorite: Boolean = false )
 
 @Composable
 fun OfferListScreen(category: String? = null , offerViewModel: OfferViewModel) {
@@ -38,7 +39,7 @@ fun OfferListScreen(category: String? = null , offerViewModel: OfferViewModel) {
         ) {
             items(offers) { offer ->
                 OfferCard(offer = offer,isFavorite = offer.isFavorite, onFavoriteClicked = {offerViewModel.onFavoriteClicked(offer)
-                                                                                           }, onClick = { selectedOffer = it })
+                                                                                           }, onApplicationClicked = {offerViewModel.addApplication(offer.id,"panding")}, onClick = { selectedOffer = it })
             }
         }
         if (selectedOffer != null) {
@@ -79,7 +80,9 @@ fun OfferDetailsDialog(offer: Offer?, onDismiss: () -> Unit) {
 }
 
 @Composable
-fun OfferCard(offer: Offer, isFavorite : Boolean , onFavoriteClicked:() -> Unit,onClick: (Offer) -> Unit) {
+fun OfferCard(offer: Offer, isFavorite : Boolean , onFavoriteClicked:() -> Unit,onClick: (Offer) -> Unit , onApplicationClicked :() -> Unit) {
+
+    val isFavorite = offer.isFavorite
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,14 +106,24 @@ fun OfferCard(offer: Offer, isFavorite : Boolean , onFavoriteClicked:() -> Unit,
                     style = MaterialTheme.typography.caption
                 )
             }
-            IconButton(
-                onClick = {onFavoriteClicked()}
-            ){
-                Icon(
-                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = if (isFavorite) "Remove from favorites " else " Add to favorites"
-                )
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(
+                    onClick = {onFavoriteClicked()}
+                ){
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = if (isFavorite) "Remove from favorites " else " Add to favorites"
+                    )
+                }
+                Button( onClick = {onApplicationClicked()},
+                    modifier = Modifier.width(width=120.dp)
+                ) {
+                    Text(text="Apply", fontSize = 15.sp)
+                }
             }
+           
         }
     }
 }
