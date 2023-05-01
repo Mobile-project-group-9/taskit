@@ -32,7 +32,6 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
 
     val scroll= rememberScrollState()
 
-
     Scaffold(
         topBar = { TopBar(profileViewModel,onSignOut) },
         content = { paddingValues ->
@@ -42,7 +41,6 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
                     .fillMaxSize()
                     .verticalScroll(scroll)
             ){
-                TopBox()
                 MiddleBox()
                 Row(
                     modifier= Modifier.padding(horizontal = 68.dp, vertical = 300.dp) ,
@@ -51,31 +49,12 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
                     EditButton(navController)
                     HistoryButton()
                 }
-                fetchImage(profileViewModel.userId,navController )
+                FetchImage(profileViewModel.userId,navController )
                 InfoBox(profileViewModel.userId)
             }
         },
     )
 
-}
-
-@Composable
-fun TopBox() {
-    Box(
-        modifier = Modifier
-            .height(300.dp)
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-            .background(Color.Blue)
-    ){
-        Text(
-            modifier = Modifier.padding(top=10.dp, start = 20.dp),
-            text="Profile" ,
-            fontSize = 30.sp ,
-            fontWeight= FontWeight.Bold,
-            color= Color.White
-        )
-    }
 }
 
 @Composable
@@ -89,13 +68,9 @@ fun MiddleBox() {
                 .padding(vertical = 200.dp, horizontal = 50.dp)
                 .height(180.dp)
                 .width(300.dp)
-
-
         ){
-
         }
     }
-
 }
 
 @Composable
@@ -288,9 +263,8 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
             }
         }
 
-
 @Composable
-fun fetchImage(user: String , navController: NavController){
+fun FetchImage(user: String , navController: NavController){
     val db = FirebaseFirestore.getInstance()
     val collectionRef = db.collection("users")
     val documentRef = collectionRef.document(user)
@@ -313,7 +287,6 @@ fun fetchImage(user: String , navController: NavController){
     }
     ProfileImage(navController,urlImage)
 }
-
 
 
 @Composable
@@ -413,7 +386,7 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
         modifier = Modifier.background(Color.Blue),
         title = { Text(
             modifier = Modifier.padding(top=10.dp, start = 20.dp),
-            text="Taskit" ,
+            text="Profile" ,
             fontSize = 30.sp ,
             fontWeight= FontWeight.Bold,
             color= Color.White)
@@ -447,8 +420,8 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
 
     )
 
-    LaunchedEffect(key1 = profileViewModel?.hasUser){
-        if (profileViewModel?.hasUser == false){
+    LaunchedEffect(key1 = profileViewModel.hasUser){
+        if (!profileViewModel.hasUser){
             onSignOut()
         }
     }
