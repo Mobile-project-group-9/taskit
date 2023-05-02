@@ -80,13 +80,13 @@ fun LoginScreen(
             ) {
                 Text(
                     text = "Welcome",
-                    fontSize=36.sp,
+                    fontSize=40.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.primary
                 )
                 Text(
-                    text="Sign In to your Account",
-                    fontSize=18.sp,
+                    text="Login in to your Account",
+                    fontSize=20.sp,
                     fontWeight=FontWeight.SemiBold,
                     color=Color.Blue
                 )
@@ -140,7 +140,7 @@ fun LoginScreen(
                     loginViewModel?.loginUser(context)
 
                 }) {
-                    Text(text = "Sign In")
+                    Text(text = "Log In")
                 }
                 Spacer(modifier = Modifier.size(16.dp))
 
@@ -148,8 +148,8 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(text = "Don't have an Account?")
-                    Spacer(modifier = Modifier.size(10.dp))
+                    Text(text = "Don't have an Account?", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.size(1.dp))
                     TextButton(onClick = { onNavToSignUpPage.invoke() }) {
                         Text(text = "SignUp")
                     }
@@ -197,7 +197,7 @@ fun SignUpScreen(
     ) {
         Image(
             painter = painterResource(id = R.drawable.signup_background),
-            contentDescription = "Login image",
+            contentDescription = "Sign Up image",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
         )
@@ -225,13 +225,13 @@ fun SignUpScreen(
             ) {
                 Text(
                     text = "Sign Up",
-                    fontSize=36.sp,
+                    fontSize=40.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.primary
                 )
                 Text(
                     text="Create your Account",
-                    fontSize=18.sp,
+                    fontSize=20.sp,
                     fontWeight=FontWeight.SemiBold,
                     color=Color.Blue
                 )
@@ -354,15 +354,15 @@ fun SignUpScreen(
                 )
 
                 Button(onClick = { loginViewModel?.createUser(context)}) {
-                    Text(text = "Sign Up")
+                    Text(text = "Sign Up", fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.size(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(text = "Already have an Account?")
-                    Spacer(modifier = Modifier.size(8.dp))
+                    Text(text = "Already have an Account?", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.size(1.dp))
                     TextButton(onClick = { onNavToLoginPage.invoke() }) {
                         Text(text = "Sign In")
                     }
