@@ -39,11 +39,11 @@ fun ProfileScreen(navController: NavController,profileViewModel:ProfileViewModel
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scroll),
+                    //.verticalScroll(scroll),
             ){
                 MiddleBox()
                 Row(
-                    modifier= Modifier.padding(horizontal = 68.dp, vertical = 300.dp) ,
+                    modifier= Modifier.padding(horizontal = 68.dp, vertical = 120.dp) ,
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     EditButton(navController)
@@ -65,9 +65,9 @@ fun MiddleBox() {
             shape= RoundedCornerShape(20.dp),
             backgroundColor= Color.Gray,
             modifier = Modifier
-                .padding(vertical = 200.dp, horizontal = 50.dp)
+                .padding(vertical = 10.dp, horizontal = 50.dp)
                 .height(180.dp)
-                .width(300.dp)
+                .fillMaxWidth()
         ){
         }
     }
@@ -111,7 +111,7 @@ fun InfoBox(user:String) {
 fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : String ,email:String){
             Box(
                 modifier = Modifier
-                    .padding(vertical = 380.dp)
+                    .padding(vertical = 200.dp)
                     .fillMaxSize()
 
             ) {
@@ -299,13 +299,12 @@ fun FetchImage(user: String , navController: NavController){
     ProfileImage(navController,urlImage)
 }
 
-
 @Composable
 fun ProfileImage(navController: NavController , urlImage : String){
     val showDialog = remember { mutableStateOf(false) }
 
     Box(
-        modifier= Modifier.padding(vertical = 120.dp, horizontal = 150.dp)
+        modifier= Modifier.padding(vertical = 3.dp, horizontal = 150.dp)
     ) {
 
         if (showDialog.value) {
@@ -429,7 +428,6 @@ fun HistoryButton(navController : NavController ) {
         }
 
     }
-
 
 @Composable
 fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
