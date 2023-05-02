@@ -63,7 +63,7 @@ fun MiddleBox() {
         Card(
             elevation = 15.dp,
             shape= RoundedCornerShape(20.dp),
-            backgroundColor= Color(0xff7AD2EE),
+            backgroundColor= Color.Gray,
             modifier = Modifier
                 .padding(vertical = 200.dp, horizontal = 50.dp)
                 .height(180.dp)
@@ -111,7 +111,7 @@ fun InfoBox(user:String) {
 fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : String ,email:String){
             Box(
                 modifier = Modifier
-                    .padding(vertical = 450.dp)
+                    .padding(vertical = 380.dp)
                     .fillMaxSize()
 
             ) {
