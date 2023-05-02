@@ -349,9 +349,9 @@ fun EditButton(navController: NavController){
     ) {
         Row(
         ){
-            Text(text="Edit", fontSize = 15.sp)
+            Text(text="Edit", fontSize = 13.sp)
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Icon(painter = painterResource(id = com.example.taskit.R.drawable.mode_edit_icon) , contentDescription = "Edit Icon" , modifier= Modifier.size(20.dp))
+            Icon(painter = painterResource(id = com.example.taskit.R.drawable.mode_edit_icon) , contentDescription = "Edit Icon" , modifier= Modifier.size(15.dp))
         }
 
     }
@@ -407,7 +407,7 @@ fun HistoryButton(navController : NavController ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "History", fontSize = 15.sp)
+                Text(text = "History", fontSize = 13.sp)
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Icon(
                     painter = painterResource(id = com.example.taskit.R.drawable.work_history_icon),
@@ -455,10 +455,6 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
                 }) {
                     Text("Log out")
 
-                    Text(text = "Cancel",
-                        modifier = Modifier.clickable { notification.value = "Cancelled" })
-                    Text(text = "Save",
-                        modifier = Modifier.clickable { notification.value = "Profile updated" })
                 }
 
             }
