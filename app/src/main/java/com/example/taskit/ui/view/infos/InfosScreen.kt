@@ -22,7 +22,13 @@ import androidx.compose.ui.unit.*
 @Composable
 fun ScreenTopBar(title: String, navController: NavController){
     TopAppBar (
-        title={ Text(title) },
+        title = { Text(
+            text="Info" ,
+            fontSize = 25.sp ,
+            fontWeight= FontWeight.Bold,
+            color= Color.White)
+
+        },
         navigationIcon = {
             IconButton(onClick = { navController.navigateUp()}){
                 Icon(Icons.Filled.ArrowBack, contentDescription = null)

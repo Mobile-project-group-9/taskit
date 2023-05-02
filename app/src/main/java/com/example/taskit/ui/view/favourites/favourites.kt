@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -36,18 +37,27 @@ fun FavouriteScreen(profileViewModel: ProfileViewModel , offerViewModel: OfferVi
             .fillMaxSize()
         ) {
         Column() {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //.height(25.dp)
-                    .background(Color(0xFF0077be))
-                    .clip(shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
-            ) {
-                Text(
-                    text = "Favorites", fontSize = 30.sp, color = Color.White,
-                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 10.dp)
-                )
-            }
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    //.height(25.dp)
+//                    .background(Color(0xFF0077be))
+//                    .clip(shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
+//            ) {
+//                Text(
+//                    text = "Favorites", fontSize = 30.sp, color = Color.White,
+//                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 10.dp)
+//                )
+//            }
+            TopAppBar(
+                title = { Text(
+                    text="Favorites" ,
+                    fontSize = 25.sp ,
+                    fontWeight= FontWeight.Bold,
+                    color= Color.White)
+
+                }
+            )
             OfferListScreen(profileViewModel.userId, offerViewModel = offerViewModel)
         }
 

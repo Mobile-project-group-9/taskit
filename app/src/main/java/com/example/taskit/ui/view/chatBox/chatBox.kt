@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,22 +30,18 @@ import kotlinx.coroutines.tasks.await
 
 @Composable
 fun ChatScreen(profileViewModel: ProfileViewModel){
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            //.verticalScroll(rememberScrollState())
-            .background(Color.Blue)
-    ){
-        Text(
-            modifier = Modifier.padding(top=10.dp, start = 20.dp),
+
+    TopAppBar(
+        title = { Text(
             text="ChatBox" ,
-            fontSize = 30.sp ,
+            fontSize = 25.sp ,
             fontWeight= FontWeight.Bold,
-            color= Color.White
-        )
-        ChatBox()
-        FetchImage(profileViewModel.userId)
-    }
+            color= Color.White)
+
+        }
+    )
+    ChatBox()
+    FetchImage(profileViewModel.userId)
 
 }
 

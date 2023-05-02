@@ -16,7 +16,9 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -46,7 +48,13 @@ fun Home(
 @Composable
 fun MainTopBar(title: String, navController: NavController){
     TopAppBar(
-        title = { Text(title) },
+        title = { Text(
+            text="Offers" ,
+            fontSize = 25.sp ,
+            fontWeight= FontWeight.Bold,
+            color= Color.White)
+
+        },
         actions = {
             IconButton(
                 onClick = {

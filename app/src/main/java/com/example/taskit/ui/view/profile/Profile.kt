@@ -432,9 +432,8 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
     TopAppBar(
         modifier = Modifier.background(Color.Blue),
         title = { Text(
-            modifier = Modifier.padding(top=10.dp, start = 20.dp),
             text="Profile" ,
-            fontSize = 30.sp ,
+            fontSize = 25.sp ,
             fontWeight= FontWeight.Bold,
             color= Color.White)
 
