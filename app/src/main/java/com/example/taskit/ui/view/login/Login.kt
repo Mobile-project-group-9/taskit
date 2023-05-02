@@ -50,7 +50,7 @@ fun LoginScreen(
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-        Image(painter = painterResource(id = R.drawable.background),
+        Image(painter = painterResource(id = R.drawable.taskit_login),
             contentDescription = "Login image",
             modifier=Modifier.fillMaxSize(),
             contentScale= ContentScale.Crop,
@@ -196,7 +196,7 @@ fun SignUpScreen(
 
     ) {
         Image(
-            painter = painterResource(id = R.drawable.background_sign_up),
+            painter = painterResource(id = R.drawable.signup_background),
             contentDescription = "Login image",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
