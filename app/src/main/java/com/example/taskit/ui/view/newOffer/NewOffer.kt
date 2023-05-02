@@ -54,7 +54,7 @@ fun NewOffer(navController: NavController) {
                 title = {
                     Text(
                         "New Offer",
-                        fontSize = 25.sp,
+                        fontSize = 25.sp, 
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )

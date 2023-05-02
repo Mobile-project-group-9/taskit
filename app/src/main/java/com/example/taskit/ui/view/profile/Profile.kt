@@ -122,7 +122,7 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
 
                 ) {
                     Card(
-                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        backgroundColor = MaterialTheme.colors.surface,
                         shape = RoundedCornerShape(20.dp),
                         modifier = Modifier
                             .height(50.dp)
@@ -141,16 +141,18 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
                                 verticalArrangement = Arrangement.spacedBy(5.dp)
                             ) {
                                 Text(
-                                    text = "First Name"
+                                    text = "First Name",
+                                    color = MaterialTheme.colors.onSurface
                                 )
                                 Text(
-                                    text = firstName
+                                    text = firstName,
+                                    color = MaterialTheme.colors.onSurface
                                 )
                             }
                         }
                     }
                     Card(
-                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        backgroundColor = MaterialTheme.colors.surface,
                         shape = RoundedCornerShape(20.dp),
                         modifier = Modifier
                             .height(50.dp)
@@ -169,16 +171,19 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
                                 verticalArrangement = Arrangement.spacedBy(5.dp)
                             ) {
                                 Text(
-                                    text = "Last Name"
+                                    text = "Last Name" ,
+                                    color = MaterialTheme.colors.onSurface
                                 )
                                 Text(
-                                    text = lastName
+                                    text = lastName,
+                                    color = MaterialTheme.colors.onSurface
+
                                 )
                             }
                         }
                     }
                     Card(
-                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        backgroundColor = MaterialTheme.colors.surface,
                         shape = RoundedCornerShape(20.dp),
                         modifier = Modifier
                             .height(50.dp)
@@ -197,16 +202,18 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
                                 verticalArrangement = Arrangement.spacedBy(5.dp)
                             ) {
                                 Text(
-                                    text = "Email"
+                                    text = "Email",
+                                    color = MaterialTheme.colors.onSurface
                                 )
                                 Text(
-                                    text = email
+                                    text = email,
+                                    color = MaterialTheme.colors.onSurface
                                 )
                             }
                         }
                     }
                     Card(
-                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        backgroundColor = MaterialTheme.colors.surface,
                         shape = RoundedCornerShape(20.dp),
                         modifier = Modifier
                             .height(50.dp)
@@ -225,16 +232,18 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
                                 verticalArrangement = Arrangement.spacedBy(5.dp)
                             ) {
                                 Text(
-                                    text = "Birth date"
+                                    text = "Birth date",
+                                    color = MaterialTheme.colors.onSurface
                                 )
                                 Text(
-                                    text = birthDate
+                                    text = birthDate,
+                                    color = MaterialTheme.colors.onSurface
                                 )
                             }
                         }
                     }
                     Card(
-                        backgroundColor = Color(color = 0xFFF6EFEF),
+                        backgroundColor = MaterialTheme.colors.surface,
                         shape = RoundedCornerShape(20.dp),
                         modifier = Modifier
                             .height(50.dp)
@@ -250,10 +259,12 @@ fun Info(firstName:String , lastName:String , birthDate:String ,phoneNumber : St
                                 verticalArrangement = Arrangement.spacedBy(5.dp)
                             ) {
                                 Text(
-                                    text = "Phone number"
+                                    text = "Phone number",
+                                    color = MaterialTheme.colors.onSurface
                                 )
                                 Text(
-                                    text = phoneNumber
+                                    text = phoneNumber,
+                                    color = MaterialTheme.colors.onSurface
                                 )
                             }
                         }
@@ -305,25 +316,25 @@ fun ProfileImage(navController: NavController , urlImage : String){
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "Change Profile Photo")
+                        Text(text = "Change Profile Photo",color = MaterialTheme.colors.onSurface)
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "emailIcon",
                             modifier=Modifier.clickable { showDialog.value = false }
                         )
                     } },
-                text = { Text(text = "take or upload a photo ") },
+                text = { Text(text = "take or upload a photo ",color = MaterialTheme.colors.onSurface) },
                 confirmButton = {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
                             Button(
                                 onClick = { navController.navigate("camera") }
                             ) {
-                                Text(text = "Take A photo ")
+                                Text(text = "Take A photo",color = MaterialTheme.colors.onSurface)
                             }
                             Button(
                                 onClick = { navController.navigate("device") }
                             ) {
-                                Text(text = " Upload photo")
+                                Text(text = " Upload photo",color = MaterialTheme.colors.onSurface)
                             }
                         }
                 }
@@ -349,7 +360,7 @@ fun EditButton(navController: NavController){
     ) {
         Row(
         ){
-            Text(text="Edit", fontSize = 13.sp)
+            Text(text="Edit", fontSize = 13.sp,color = MaterialTheme.colors.onSurface)
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Icon(painter = painterResource(id = com.example.taskit.R.drawable.mode_edit_icon) , contentDescription = "Edit Icon" , modifier= Modifier.size(15.dp))
         }
@@ -370,7 +381,7 @@ fun HistoryButton(navController : NavController ) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = " Applications and Offers ")
+                        Text(text = " Applications and Offers ",color = MaterialTheme.colors.onSurface)
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "close Icon",
@@ -378,7 +389,7 @@ fun HistoryButton(navController : NavController ) {
                         )
                     }
                 },
-                text = { Text(text = " check the task that you applied to it and the offers of application that you received ") },
+                text = { Text(text = " check the task that you applied to it and the offers of application that you received ",color = MaterialTheme.colors.onSurface) },
                 confirmButton = {
                     Row(
                         Modifier.fillMaxWidth(),
@@ -388,12 +399,12 @@ fun HistoryButton(navController : NavController ) {
                         Button(
                             onClick = { navController.navigate("applications") }
                         ) {
-                            Text(text = " Applications ")
+                            Text(text = " Applications ",color = MaterialTheme.colors.onSurface)
                         }
                         Button(
                             onClick = { navController.navigate("offers") }
                         ) {
-                            Text(text = " Offers ")
+                            Text(text = " Offers ",color = MaterialTheme.colors.onSurface)
                         }
                     }
                 }
@@ -407,7 +418,7 @@ fun HistoryButton(navController : NavController ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "History", fontSize = 13.sp)
+                Text(text = "History", fontSize = 13.sp,color = MaterialTheme.colors.onSurface)
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Icon(
                     painter = painterResource(id = com.example.taskit.R.drawable.work_history_icon),
@@ -435,7 +446,7 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
             text="Profile" ,
             fontSize = 25.sp ,
             fontWeight= FontWeight.Bold,
-            color= Color.White)
+            color = MaterialTheme.colors.onSurface)
 
         },
         actions = {
@@ -453,7 +464,7 @@ fun TopBar(profileViewModel:ProfileViewModel,onSignOut:() -> Unit) {
                     profileViewModel.signOut()
                     onSignOut()
                 }) {
-                    Text("Log out")
+                    Text("Log out",color = MaterialTheme.colors.onSurface)
 
                 }
 
