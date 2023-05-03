@@ -23,9 +23,9 @@ Taskit uses Firebase Authentification, Database and Storage. It is an applicatio
 
 
 **# Work Organisation:-**  
-Raghav - Authentication, Database creation, Business Model, Profile Page, Splash screen, graphical designs
-Chaima - Designing ( Profile Page + Favourite Screen+ Edit Screen), camera permission, ,Fetching  & sending data for the Profile,Favourite,Edit page.
-Aïcha - NewOffer page design, ChatBox
-Arnaud -  Home, MyOffers, NewOffers and Informations pages. Fetching and Sending data. App structure + overall design. 
+ - Raghav : Authentication, Database creation, Business Model, Profile Page, Splash screen, graphical designs
+ - Chaima: Designing ( Profile Page + Favourite Screen+ Edit Screen), camera permission, ,Fetching  & sending data for the Profile,Favourite,Edit page.
+ - Aïcha: NewOffer page design, ChatBox
+-  Arnaud  :Home, MyOffers, NewOffers and Informations pages. Fetching and Sending data. App structure + overall design. 
 
 
