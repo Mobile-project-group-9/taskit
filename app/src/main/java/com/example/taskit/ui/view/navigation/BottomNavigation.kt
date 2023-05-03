@@ -13,6 +13,7 @@ import androidx.navigation.navigation
 import com.example.taskit.HomeRoutes
 import com.example.taskit.LoginRoutes
 import com.example.taskit.NestedRoutes
+import com.example.taskit.ui.view.chatBox.ChatMessagesScreen
 import com.example.taskit.ui.view.chatBox.ChatScreen
 import com.example.taskit.ui.view.home.Home
 import com.example.taskit.ui.view.chatBox.ChatScreen
@@ -62,7 +63,7 @@ fun HomeNavGraph(
             MainScreen(navController,offerViewModel)
         }
         composable(route="Chat"){
-            ChatScreen(profileViewModel)
+            ChatScreen("user",navController)
         }
         composable(route="Favourites"){
             FavouriteScreen(profileViewModel, offerViewModel)
@@ -90,6 +91,9 @@ fun HomeNavGraph(
         }
         composable("applications"){
             TaskScreen(profileViewModel)
+        }
+        composable("message"){
+            ChatMessagesScreen("user",navController)
         }
     }
 }

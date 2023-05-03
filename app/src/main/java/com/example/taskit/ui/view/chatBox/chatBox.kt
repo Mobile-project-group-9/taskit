@@ -1,152 +1,256 @@
 package com.example.taskit.ui.view.chatBox
 
-import android.util.Log
+import android.graphics.Paint.Align
+import android.os.Bundle
+import com.example.taskit.ui.view.chatBox.Message
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
-import com.example.taskit.ui.theme.TaskitTheme
-import com.example.taskit.ui.view.newOffer.NewOffer
-import com.example.taskit.ui.viewmodel.navigation.TabItem
-import com.example.taskit.ui.viewmodel.profile.ProfileViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
+
 
 @Composable
-fun ChatScreen(profileViewModel: ProfileViewModel){
-
-    TopAppBar(
-        title = { Text(
-            text="ChatBox" ,
-            fontSize = 25.sp ,
-            fontWeight= FontWeight.Bold,
-            color= Color.White)
-
-        }
-    )
-    ChatBox()
-    FetchImage(profileViewModel.userId)
-
-}
-
-@Composable
-fun ChatBox() {
+fun ChatScreen(userName: String, navController: NavHostController) {
+    val messages = getMessagesForUser(userName)
     Box(
         modifier = Modifier
-            .padding(vertical = 150.dp)
-            .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(MaterialTheme.colors.background)
+    ) {
+
+        Text(
+            modifier = Modifier.padding(top=10.dp, start = 20.dp),
+            text="ChatBox" ,
+            textAlign = TextAlign.Center,
+            fontSize = 30.sp ,
+            fontWeight= FontWeight.Bold,
+            color = MaterialTheme.colors.onBackground
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            ChatBox(navController)
+            ProfileImage()
+        }
+
+    }
+
+
+@Composable
+fun ChatBox(navController: NavHostController) {
+    Box(
+        modifier = Modifier
+            .padding(vertical = 120.dp)
+            .fillMaxSize()
             .clip(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp))
-            .background(Color.White)
+            .background(Color.LightGray)
 
-    ){
+    ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier= Modifier.padding(vertical = 90.dp, horizontal = 20.dp),
-        ){
-            ChatCard("User123",com.example.taskit.R.drawable.image)
-            ChatCard("User456",com.example.taskit.R.drawable.image)
-            ChatCard("User789",com.example.taskit.R.drawable.image)
-            ChatCard("User321", com.example.taskit.R.drawable.image )
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                .background(Color.LightGray)
+                .padding(top = 120.dp)
+                .padding(horizontal = 16.dp)
+        ) {
+            ChatCard(Message("User123", "Hello there!", com.example.taskit.R.drawable.image), navController)
+            ChatCard(Message("User456", "How are you?", com.example.taskit.R.drawable.image), navController)
+            ChatCard(Message("User789", "I'm fine, thanks.", com.example.taskit.R.drawable.image), navController)
+            ChatCard(Message("User321", "What about you?", com.example.taskit.R.drawable.image), navController)
         }
     }
 }
 
 @Composable
-fun FetchImage(user: String ){
-    val db = FirebaseFirestore.getInstance()
-    val collectionRef = db.collection("users")
-    val documentRef = collectionRef.document(user)
-    var userInfo by remember { mutableStateOf<MutableMap<String, Any>>(mutableMapOf()) }
-    var urlImage by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) {
-        try {
-            val documentSnapshot = documentRef.get().await()
-            if (documentSnapshot != null) {
-                val data = documentSnapshot.data
-                if (data != null) {
-                    userInfo = data.toMutableMap()
-                    urlImage = userInfo.getValue("photo").toString()
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("******", e.message.toString())
-        }
-    }
-    ProfileImage(urlImage)
-}
-
-@Composable
-fun ProfileImage(urlImage :String ){
+fun ProfileImage() {
     Box(
         modifier= Modifier.padding(vertical = 80.dp, horizontal = 150.dp)
     ) {
         Image(
-            painter= rememberImagePainter(data = urlImage),
-            contentDescription = "Profile Image",
             modifier = Modifier
                 .clip(CircleShape)
-                .size(150.dp)
+                .size(150.dp),
+            //.shadow(elevation=5.dp),
+
+            painter = painterResource(id = com.example.taskit.R.drawable.image),
+            contentDescription = "Profile Image "
         )
     }
 }
 
 @Composable
-fun ChatCard(user:String,photoId:Int){
-    Card(
-
-        backgroundColor= Color(color=0xFFF6EFEF),
-        shape= RoundedCornerShape(20.dp),
-        modifier= Modifier
-            .height(100.dp)
-            .fillMaxWidth(0.95f)
-            .clickable { }
-    ){
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 10.dp)
-        ){
-            Image(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(80.dp),
-                painter = painterResource(id = photoId),
-                contentDescription = "Profile Image "
-            )
+fun ChatCard(message: Message, navController: NavHostController) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate("message")
+            }
+    ) {
+        Image(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(80.dp)
+                .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape),
+            painter = painterResource(id = message.photoId),
+            contentDescription = "Profile Image "
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
             Text(
-                text=user,
+                text = message.name,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.secondaryVariant,
+                style = MaterialTheme.typography.subtitle2
             )
+            Spacer(modifier = Modifier.height(4.dp))
+            Surface(
+                shape = RoundedCornerShape(8.dp),
+                elevation = 1.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Text(
+                    text = message.text,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.body2,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                )
+            }
+        }
+    }
+}
 
+data class Message(
+    val name: String,
+    val text: String,
+    val photoId: Int
+)
+
+@Composable
+fun ChatMessagesScreen(
+    userName: String,
+    navController: NavHostController
+) {
+    val (newMessage, setNewMessage) = remember { mutableStateOf("") }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
+        // Top app bar with back button
+        TopAppBar(
+            title = {
+                Text(
+                    text = userName,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                }
+            },
+            backgroundColor = MaterialTheme.colors.background,
+            contentColor = MaterialTheme.colors.onBackground,
+            elevation = 0.dp
+        )
+
+        // Chat messages list
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 56.dp)
+        ) {
+            items(getMessagesForUser(userName)) { message ->
+                ChatCard(message,navController)
+            }
+        }
+        Box(
+            modifier = Modifier
+                .padding(50.dp)
+
+        ) {
+            OutlinedTextField(
+                value = newMessage,
+                onValueChange = setNewMessage,
+                label = { Text("Type a message...") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .height(60.dp),
+                maxLines = 2,
+                singleLine = false,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = MaterialTheme.colors.secondary,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                shape = CircleShape,
+                trailingIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            painter = painterResource(id = com.example.taskit.R.drawable.ic_send),
+                            contentDescription = "Send",
+                            tint = if (newMessage.isNotBlank()) MaterialTheme.colors.primary else Color.Gray
+                        )
+                    }
+                }
+            )
         }
 
     }
-
 }
 
-//@Preview(showSystemUi = true)
-//@Composable
-//fun chatScreen() {
-//    TaskitTheme {
-//        ChatScreen()
-//    }
-//}
+// Dummy function to get messages for a user
+fun getMessagesForUser(userName: String): List<Message> {
+    return listOf(
+        Message(userName, "Hi", com.example.taskit.R.drawable.image),
+        Message("Me", "Hey there!", com.example.taskit.R.drawable.image),
+        Message(userName, "How are you?", com.example.taskit.R.drawable.image),
+        Message("Me", "I'm good, thanks! How about you?", com.example.taskit.R.drawable.image),
+        Message(userName, "I'm doing well too", com.example.taskit.R.drawable.image)
+    )
+}
