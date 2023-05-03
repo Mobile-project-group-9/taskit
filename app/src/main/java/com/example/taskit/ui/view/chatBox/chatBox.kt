@@ -50,14 +50,15 @@ fun ChatScreen(userName: String, navController: NavHostController) {
             .background(MaterialTheme.colors.background)
     ) {
 
-        Text(
-            modifier = Modifier.padding(top=10.dp, start = 20.dp),
-            text="ChatBox" ,
-            textAlign = TextAlign.Center,
-            fontSize = 30.sp ,
-            fontWeight= FontWeight.Bold,
-            color = MaterialTheme.colors.onBackground
-            )
+        TopAppBar(
+            title = { Text(
+                text="ChatBox" ,
+                fontSize = 25.sp ,
+                fontWeight= FontWeight.Bold,
+                color= Color.White)
+
+            }
+        )
             Spacer(modifier = Modifier.height(16.dp))
             ChatBox(navController)
             ProfileImage()
@@ -73,7 +74,7 @@ fun ChatBox(navController: NavHostController) {
             .padding(vertical = 120.dp)
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp))
-            .background(Color.LightGray)
+            .background(Color.White)
 
     ) {
         Column(
@@ -81,7 +82,7 @@ fun ChatBox(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
-                .background(Color.LightGray)
+                .background(Color.White)
                 .padding(top = 120.dp)
                 .padding(horizontal = 16.dp)
         ) {
@@ -112,49 +113,53 @@ fun ProfileImage() {
 
 @Composable
 fun ChatCard(message: Message, navController: NavHostController) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                navController.navigate("message")
-            }
+    Card(
+        backgroundColor= Color.LightGray,
+        shape= RoundedCornerShape(20.dp),
+        modifier= Modifier
+            .height(100.dp)
+            .fillMaxWidth(0.95f)
+            .clickable {}
     ) {
-        Image(
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(80.dp)
-                .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape),
-            painter = painterResource(id = message.photoId),
-            contentDescription = "Profile Image "
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(
-            modifier = Modifier.weight(1f)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 10.dp)
+                .background(Color.LightGray)
+                .clickable {
+                    navController.navigate("message")
+                }
         ) {
-            Text(
-                text = message.name,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.secondaryVariant,
-                style = MaterialTheme.typography.subtitle2
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Surface(
-                shape = RoundedCornerShape(8.dp),
-                elevation = 1.dp,
+            Image(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                    .clip(CircleShape)
+                    .size(80.dp)
+                    .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape),
+                painter = painterResource(id = message.photoId),
+                contentDescription = "Profile Image "
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = message.text,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colors.onSurface,
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                    text = message.name,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.secondaryVariant,
+                    style = MaterialTheme.typography.subtitle2
                 )
+                Spacer(modifier = Modifier.height(4.dp))
+                Surface(shape = MaterialTheme.shapes.medium, elevation = 1.dp) {
+                    Text(
+                        text = message.text,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colors.onSurface,
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                    )
+                }
             }
         }
     }
@@ -248,9 +253,12 @@ fun ChatMessagesScreen(
 fun getMessagesForUser(userName: String): List<Message> {
     return listOf(
         Message(userName, "Hi", com.example.taskit.R.drawable.image),
+
         Message("Me", "Hey there!", com.example.taskit.R.drawable.image),
         Message(userName, "How are you?", com.example.taskit.R.drawable.image),
         Message("Me", "I'm good, thanks! How about you?", com.example.taskit.R.drawable.image),
+        Message(userName, "I'm doing well too", com.example.taskit.R.drawable.image),
+        Message("Me", "very good", com.example.taskit.R.drawable.image),
         Message(userName, "I'm doing well too", com.example.taskit.R.drawable.image)
-    )
+        )
 }
