@@ -1,6 +1,6 @@
 # Taskit Business Plan
 The application is an ads website. It is a collaborative consumption: the user gets and offers services. So, the company is a part of the classified advertising field which has many forms, one of them the online classified ads including our application.  
-Since the rise of the internet use and the increase of the online content, the online classified advertising became one of the most used online tools worldwide. It is flexible, easy, and accessible. The market for the internet classified ads has kept growing, especially after the convid-19 pandemic. 
+Since the rise of the internet use and the increase of the online content, the online classified advertising became one of the most used online tools worldwide. It is flexible, easy, and accessible. The market for the internet classified ads has kept growing, especially after the covid-19 pandemic. 
 
 **#Features**
 Taskit uses Firebase Authentification, Database and Storage. It is an application for android, We have used Kotlin programming language to give the best features to it.
